@@ -8,7 +8,7 @@ type Props = {
   title?: string
 }
 
-export const Layout: FC<Props> = ({ title = "禁煙ミテミル", children }) => {
+export const Layout: FC<Props> = ({ title = "禁煙ミエルカ", children }) => {
   return (
     <div className='min-h-screen bg-gray-100 overflow-hidden'>
       <Head>
@@ -28,7 +28,7 @@ export const Layout: FC<Props> = ({ title = "禁煙ミテミル", children }) =>
               objectFit='contain'
               className='transform scale-140'
             />
-            <span className='font-mono text-white ml-3'>禁煙ミテミル</span>
+            <span className='font-mono text-white ml-3'>禁煙ミエルカ</span>
           </h1>
         </nav>
       </header>
