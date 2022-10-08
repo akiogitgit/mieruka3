@@ -29,7 +29,7 @@ const Auth = () => {
       password: "",
       name: "",
       num_tabaco_per_day: 0,
-      tabaco_price: 0,
+      tabaco_price: 550,
     },
     validate: {
       email: (v: string) => {
@@ -43,6 +43,9 @@ const Auth = () => {
       },
       password: (v: string) =>
         v.length < 6 ? "パスワードは6文字以上で入力して下さい" : null,
+      name: (v: string) => (v === "" ? "名前は必須項目です" : null),
+      num_tabaco_per_day: v => (v === 0 ? "一日に吸う本数は一本以上に" : null),
+      tabaco_price: v => (v === 0 ? "タバコは0円以上で入力して下さい" : null),
     },
   })
 
@@ -97,6 +100,23 @@ const Auth = () => {
 
       form.reset()
     }
+  }, [form, isRegister])
+
+  const onChangeForm = useCallback(() => {
+    setIsRegister(!isRegister)
+    setError("")
+
+    if (isRegister) {
+      form.setValues({
+        email: "",
+        password: "",
+        name: "a",
+        num_tabaco_per_day: 100,
+        tabaco_price: 550,
+      })
+      return
+    }
+    form.reset()
   }, [form, isRegister])
 
   // ログインしていたら、setSessionに格納
@@ -170,39 +190,35 @@ const Auth = () => {
               <PasswordInput
                 withAsterisk
                 label='パスワード'
-                description='8文字以上で入力して下さい'
+                description='6文字以上で入力して下さい'
                 {...form.getInputProps("password")}
               />
               {isRegister && (
                 <>
                   <TextInput
-                    withAsterisk
                     label='名前'
                     placeholder=''
+                    withAsterisk
                     {...form.getInputProps("name")}
                   />
                   <NumberInput
-                    withAsterisk
                     label=' タバコの一箱の値段'
                     description='普段吸っているタバコの金額を入力して下さい'
+                    withAsterisk
+                    min={0}
+                    step={10}
                     {...form.getInputProps("tabaco_price")}
                   />
                   <NumberInput
-                    withAsterisk
                     label='一日に吸うタバコの本数'
+                    withAsterisk
+                    min={0}
                     {...form.getInputProps("num_tabaco_per_day")}
                   />
                 </>
               )}
               <div className='flex justify-between'>
-                <p
-                  className='text-sm'
-                  onClick={() => {
-                    setIsRegister(!isRegister)
-                    setError("")
-                    form.reset()
-                  }}
-                >
+                <p className='text-sm' onClick={onChangeForm}>
                   {isRegister ? "ログイン" : "新規登録"}は
                   <span className='cursor-pointer text-blue-500'>こちら</span>
                 </p>
