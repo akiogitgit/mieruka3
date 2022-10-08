@@ -8,6 +8,15 @@ type Props = {
   title?: string
 }
 
+// NOTE: authは別にする。ログインしていたらログアウトボタン表示
+const menus = [
+  { path: "/", label: "ホーム" },
+  { path: "/calendar", label: "カレンダー" },
+  { path: "/chat", label: "タイムライン" },
+  { path: "/direct-message", label: "医者とのDM" },
+  { path: "/auth", label: "ログイン" },
+]
+
 export const Layout: FC<Props> = ({ title = "禁煙ミエルカ", children }) => {
   return (
     <div className='min-h-screen bg-gray-100 overflow-hidden'>
@@ -19,17 +28,27 @@ export const Layout: FC<Props> = ({ title = "禁煙ミエルカ", children }) =>
 
       <header className='bg-blue-500 shadow-lg w-full py-2 top-0 z-100'>
         <nav className='flex mx-5 items-center justify-between'>
-          <h1 className='flex items-center'>
-            <Image
-              src='/favicon.ico'
-              height={50}
-              width={50}
-              alt=''
-              objectFit='contain'
-              className='transform scale-140'
-            />
-            <span className='font-mono text-white ml-3'>禁煙ミエルカ</span>
-          </h1>
+          <Link href='/'>
+            <h1 className='cursor-pointer flex items-center'>
+              <Image
+                src='/favicon.ico'
+                height={50}
+                width={50}
+                alt=''
+                objectFit='contain'
+                className='transform scale-140'
+              />
+              <span className='font-mono text-white ml-3'>禁煙ミエルカ</span>
+            </h1>
+          </Link>
+
+          <div className='hidden sm:(flex gap-3) '>
+            {menus.map(menu => (
+              <Link href={menu.path} key={menu.path}>
+                <a className='font-bold text-white text-sm'>{menu.label}</a>
+              </Link>
+            ))}
+          </div>
         </nav>
       </header>
       <main>
