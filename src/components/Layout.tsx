@@ -5,6 +5,7 @@ import Image from "next/image"
 import { Burger, Button, Drawer } from "@mantine/core"
 import { supabase } from "../utils/supabase"
 import { useIsLoggedIn } from "../hooks/useIsLoggedIn"
+import { useRouter } from "next/router"
 
 type Props = {
   children: ReactNode
@@ -22,6 +23,7 @@ const menus = [
 export const Layout: FC<Props> = ({ title = "禁煙ミエルカ", children }) => {
   const [opened, setOpened] = useState(false)
   const session = useIsLoggedIn()
+  const router = useRouter()
 
   // ログアウト
   const signOut = useCallback(() => {
@@ -53,28 +55,44 @@ export const Layout: FC<Props> = ({ title = "禁煙ミエルカ", children }) =>
             </h1>
           </Link>
 
-          <div className='flex gap-3'>
-            {!session && (
-              <Link href='/auth'>
-                <Button color='blue' variant='light' onClick={signOut}>
-                  LogIn
-                </Button>
-              </Link>
-            )}
+          <div className='flex flex-row-reverse gap-3 items-center sm:flex-row'>
             <Burger
-              className='md:hidden'
+              className='sm:hidden'
               opened={opened}
               onClick={() => setOpened(o => !o)}
               color='white'
             />
-          </div>
-          <div className='hidden md:(flex gap-3) '>
-            {menus.map(menu => (
-              <Link href={menu.path} key={menu.path}>
-                <a className='font-bold text-white text-sm'>{menu.label}</a>
+            <div className='hidden sm:(flex gap-3) '>
+              {menus.map(menu => (
+                <Link href={menu.path} key={menu.path}>
+                  <a
+                    className={`${
+                      router.pathname === menu.path && "border-b"
+                    } font-bold text-white text-sm`}
+                  >
+                    {menu.label}
+                  </a>
+                </Link>
+              ))}
+            </div>
+            {session ? (
+              <Button
+                className='hidden sm:block'
+                color='blue'
+                variant='light'
+                onClick={signOut}
+              >
+                LogOut
+              </Button>
+            ) : (
+              <Link href='/auth'>
+                <Button color='blue' variant='light'>
+                  LogIn
+                </Button>
               </Link>
-            ))}
+            )}
           </div>
+
           <Drawer
             opened={opened}
             onClose={() => setOpened(false)}

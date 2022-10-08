@@ -9,6 +9,7 @@ import {
 } from "@mantine/core"
 import { useForm, yupResolver } from "@mantine/form"
 import { Session } from "@supabase/supabase-js"
+import { useRouter } from "next/router"
 import React, { useCallback, useEffect, useState } from "react"
 import { Layout } from "../components/Layout"
 import { AuthFormParams } from "../types/user"
@@ -22,6 +23,8 @@ const Auth = () => {
   const [isRegister, setIsRegister] = useState(false)
   const [error, setError] = useState("")
   const [session, setSession] = useState<Session | null>(null)
+
+  const router = useRouter()
 
   const form = useForm<AuthFormParams>({
     initialValues: {
@@ -99,8 +102,6 @@ const Auth = () => {
         // supabaseが取得出来ないエラー
         console.error(e)
       }
-
-      form.reset() // フォームをリセット
     } else {
       // ログイン
       const { error } = await supabase.auth.signIn({
@@ -112,10 +113,11 @@ const Auth = () => {
         setError(error.message)
         return
       }
-
-      form.reset()
     }
-  }, [form, isRegister])
+
+    form.reset() // フォームをリセット
+    router.push("/") // index.tsxに移動
+  }, [form, isRegister, router])
 
   const onChangeForm = useCallback(() => {
     setIsRegister(!isRegister)
@@ -170,7 +172,6 @@ const Auth = () => {
               "ログインして下さい"
             )}
           </div>
-          {JSON.stringify(form)}
           {/* form(定義したやつ)をsubmitする時onSubmitを発火 */}
           <form onSubmit={form.onSubmit(onSubmit)}>
             <div className='flex flex-col gap-3'>
