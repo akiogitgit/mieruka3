@@ -4,6 +4,10 @@ import { Layout } from "../components/Layout"
 import Link from "next/link"
 import { Sample } from "../types/sample"
 
+// メイン画面（継続日数、節約金額、応援メッセージ、リスクが下がった）
+// 肺の背景が少し明るくするとか
+// 臓器くん
+
 const Home: NextPage = () => {
   const samples: Sample[] = [
     {
