@@ -31,12 +31,17 @@ const Auth = () => {
       tabaco_price: 0,
     },
     validate: {
-      email: (v: string) => (/^\S+@\S+$/.test(v) ? null : "Emailは必須です"),
+      email: (v: string) => {
+        if (v.length === 0) {
+          return "Emailは必須項目です"
+        }
+        if (!/^\S+@\S+$/.test(v)) {
+          return "Emailのフォーマットで入力して下さい"
+        }
+        return null
+      },
       password: (v: string) =>
         v.length < 6 ? "パスワードは6文字以上で入力して下さい" : null,
-      // name: (v: string) => (v === "" ? "名前は必須です" : null),
-      // num_tabaco_per_day: v => (v === 0 ? "invalid firstName" : null),
-      // tabaco_price: v => (v === 0 ? "invalid firstName" : null),
     },
   })
 
