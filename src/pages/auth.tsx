@@ -9,6 +9,7 @@ import {
 } from "@mantine/core"
 import { useForm, yupResolver } from "@mantine/form"
 import { Session } from "@supabase/supabase-js"
+import { useRouter } from "next/router"
 import React, { useCallback, useEffect, useState } from "react"
 import { Layout } from "../components/Layout"
 import { AuthFormParams } from "../types/user"
@@ -22,6 +23,8 @@ const Auth = () => {
   const [isRegister, setIsRegister] = useState(false)
   const [error, setError] = useState("")
   const [session, setSession] = useState<Session | null>(null)
+
+  const router = useRouter()
 
   const form = useForm<AuthFormParams>({
     initialValues: {
@@ -43,9 +46,24 @@ const Auth = () => {
       },
       password: (v: string) =>
         v.length < 6 ? "パスワードは6文字以上で入力して下さい" : null,
-      name: (v: string) => (v === "" ? "名前は必須項目です" : null),
-      num_tabaco_per_day: v => (v === 0 ? "一日に吸う本数は一本以上に" : null),
-      tabaco_price: v => (v === 0 ? "タバコは0円以上で入力して下さい" : null),
+      name: (v: string) => {
+        if (v === "" && isRegister) {
+          return "名前は必須項目です"
+        }
+        return null
+      },
+      num_tabaco_per_day: v => {
+        if (v === 0 && isRegister) {
+          return "一日に吸う本数は一本以上に"
+        }
+        return null
+      },
+      tabaco_price: v => {
+        if (v === 0 && isRegister) {
+          return "タバコは0円以上で入力して下さい"
+        }
+        return null
+      },
     },
   })
 
@@ -84,8 +102,6 @@ const Auth = () => {
         // supabaseが取得出来ないエラー
         console.error(e)
       }
-
-      form.reset() // フォームをリセット
     } else {
       // ログイン
       const { error } = await supabase.auth.signIn({
@@ -97,25 +113,15 @@ const Auth = () => {
         setError(error.message)
         return
       }
-
-      form.reset()
     }
-  }, [form, isRegister])
+
+    form.reset() // フォームをリセット
+    router.push("/") // index.tsxに移動
+  }, [form, isRegister, router])
 
   const onChangeForm = useCallback(() => {
     setIsRegister(!isRegister)
     setError("")
-
-    if (isRegister) {
-      form.setValues({
-        email: "",
-        password: "",
-        name: "a",
-        num_tabaco_per_day: 100,
-        tabaco_price: 550,
-      })
-      return
-    }
     form.reset()
   }, [form, isRegister])
 
@@ -166,7 +172,6 @@ const Auth = () => {
               "ログインして下さい"
             )}
           </div>
-
           {/* form(定義したやつ)をsubmitする時onSubmitを発火 */}
           <form onSubmit={form.onSubmit(onSubmit)}>
             <div className='flex flex-col gap-3'>
