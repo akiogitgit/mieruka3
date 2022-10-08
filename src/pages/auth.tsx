@@ -5,6 +5,7 @@ import {
   NumberInput,
   Button,
   TextInput,
+  Center,
 } from "@mantine/core"
 import { useForm, yupResolver } from "@mantine/form"
 import { Session } from "@supabase/supabase-js"
@@ -116,93 +117,103 @@ const Auth = () => {
 
   return (
     <Layout>
-      <div className='min-w-100px max-w-400px'>
-        <div className='flex flex-col justify-center items-center'>
-          {/* <Center> */}
-          {error && (
-            <Alert mt='md' title='Authorization Error' color='red' radius='md'>
-              {error}
-            </Alert>
-          )}
-        </div>
-        <div>
-          {session ? (
-            <Button
-              color='red'
-              variant='gradient'
-              gradient={{ from: "yellow", to: "red" }}
-              onClick={signOut}
-            >
-              Logout
-            </Button>
-          ) : (
-            "ログインして下さい"
-          )}
-        </div>
-
-        {/* form(定義したやつ)をsubmitする時onSubmitを発火 */}
-        {JSON.stringify(form.values)}
-        <form onSubmit={form.onSubmit(onSubmit)}>
-          <div className='flex flex-col gap-3'>
-            <Autocomplete
-              label='Email'
-              placeholder='example@gmail.com'
-              withAsterisk
-              data={
-                form.values.email.length > 0 && !form.values.email.includes("@")
-                  ? ["gmail.com", "outlook.com", "yahoo.com", "icloud.com"].map(
-                      provider => `${form.values.email}@${provider}`,
-                    )
-                  : [""]
-              }
-              {...form.getInputProps("email")}
-            />
-            <PasswordInput
-              withAsterisk
-              label='パスワード'
-              description='8文字以上で入力して下さい'
-              {...form.getInputProps("password")}
-            />
-            {isRegister && (
-              <>
-                <TextInput
-                  withAsterisk
-                  label='名前'
-                  placeholder=''
-                  {...form.getInputProps("name")}
-                />
-                <NumberInput
-                  withAsterisk
-                  label=' タバコの一箱の値段'
-                  description='普段吸っているタバコの金額を入力して下さい'
-                  {...form.getInputProps("tabaco_price")}
-                />
-                <NumberInput
-                  withAsterisk
-                  label='一日に吸うタバコの本数'
-                  {...form.getInputProps("num_tabaco_per_day")}
-                />
-              </>
-            )}
-            <div className='flex justify-between'>
-              <p
-                className='text-sm'
-                onClick={() => {
-                  setIsRegister(!isRegister)
-                  setError("")
-                  form.reset()
-                }}
+      <Center>
+        <div className='w-300px'>
+          <div className='flex flex-col justify-center items-center'>
+            {/* <Center> */}
+            {error && (
+              <Alert
+                mt='md'
+                title='Authorization Error'
+                color='red'
+                radius='md'
               >
-                {isRegister ? "ログイン" : "新規登録"}は
-                <span className='cursor-pointer text-blue-500'>こちら</span>
-              </p>
-              <Button mt='md' variant='gradient' type='submit'>
-                {isRegister ? "新規登録" : "ログイン"}
-              </Button>
-            </div>
+                {error}
+              </Alert>
+            )}
           </div>
-        </form>
-      </div>
+          <div>
+            {session ? (
+              <Button
+                color='red'
+                variant='gradient'
+                gradient={{ from: "yellow", to: "red" }}
+                onClick={signOut}
+              >
+                Logout
+              </Button>
+            ) : (
+              "ログインして下さい"
+            )}
+          </div>
+
+          {/* form(定義したやつ)をsubmitする時onSubmitを発火 */}
+          <form onSubmit={form.onSubmit(onSubmit)}>
+            <div className='flex flex-col gap-3'>
+              <Autocomplete
+                label='Email'
+                placeholder='example@gmail.com'
+                withAsterisk
+                data={
+                  form.values.email.length > 0 &&
+                  !form.values.email.includes("@")
+                    ? [
+                        "gmail.com",
+                        "outlook.com",
+                        "yahoo.com",
+                        "icloud.com",
+                      ].map(provider => `${form.values.email}@${provider}`)
+                    : [""]
+                }
+                {...form.getInputProps("email")}
+              />
+              <PasswordInput
+                withAsterisk
+                label='パスワード'
+                description='8文字以上で入力して下さい'
+                {...form.getInputProps("password")}
+              />
+              {isRegister && (
+                <>
+                  <TextInput
+                    withAsterisk
+                    label='名前'
+                    placeholder=''
+                    {...form.getInputProps("name")}
+                  />
+                  <NumberInput
+                    withAsterisk
+                    label=' タバコの一箱の値段'
+                    description='普段吸っているタバコの金額を入力して下さい'
+                    {...form.getInputProps("tabaco_price")}
+                  />
+                  <NumberInput
+                    withAsterisk
+                    label='一日に吸うタバコの本数'
+                    {...form.getInputProps("num_tabaco_per_day")}
+                  />
+                </>
+              )}
+              <div className='flex justify-between'>
+                <p
+                  className='text-sm'
+                  onClick={() => {
+                    setIsRegister(!isRegister)
+                    setError("")
+                    form.reset()
+                  }}
+                >
+                  {isRegister ? "ログイン" : "新規登録"}は
+                  <span className='cursor-pointer text-blue-500'>こちら</span>
+                </p>
+                <Button mt='md' variant='gradient' type='submit'>
+                  {isRegister ? "新規登録" : "ログイン"}
+                </Button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </Center>
     </Layout>
   )
 }
