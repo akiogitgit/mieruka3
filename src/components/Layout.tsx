@@ -1,7 +1,10 @@
-import React, { FC, ReactNode } from "react"
+import React, { FC, ReactNode, useCallback, useState } from "react"
 import Head from "next/head"
 import Link from "next/link"
 import Image from "next/image"
+import { Burger, Button, Drawer } from "@mantine/core"
+import { supabase } from "../utils/supabase"
+import { useIsLoggedIn } from "../hooks/useIsLoggedIn"
 
 type Props = {
   children: ReactNode
@@ -14,10 +17,18 @@ const menus = [
   { path: "/calendar", label: "カレンダー" },
   { path: "/chat", label: "タイムライン" },
   { path: "/direct-message", label: "医者とのDM" },
-  { path: "/auth", label: "ログイン" },
 ]
 
 export const Layout: FC<Props> = ({ title = "禁煙ミエルカ", children }) => {
+  const [opened, setOpened] = useState(false)
+  const session = useIsLoggedIn()
+
+  // ログアウト
+  const signOut = useCallback(() => {
+    supabase.auth.signOut()
+    console.log("signOut")
+  }, [])
+
   return (
     <div className='min-h-screen bg-gray-100 overflow-hidden'>
       <Head>
@@ -42,13 +53,54 @@ export const Layout: FC<Props> = ({ title = "禁煙ミエルカ", children }) =>
             </h1>
           </Link>
 
-          <div className='hidden sm:(flex gap-3) '>
+          <div className='flex gap-3'>
+            {!session && (
+              <Link href='/auth'>
+                <Button color='blue' variant='light' onClick={signOut}>
+                  LogIn
+                </Button>
+              </Link>
+            )}
+            <Burger
+              className='md:hidden'
+              opened={opened}
+              onClick={() => setOpened(o => !o)}
+              color='white'
+            />
+          </div>
+          <div className='hidden md:(flex gap-3) '>
             {menus.map(menu => (
               <Link href={menu.path} key={menu.path}>
                 <a className='font-bold text-white text-sm'>{menu.label}</a>
               </Link>
             ))}
           </div>
+          <Drawer
+            opened={opened}
+            onClose={() => setOpened(false)}
+            padding='xl'
+            position='right'
+            size='sm'
+          >
+            <div className='flex flex-col gap-3'>
+              {menus.map(menu => (
+                <Link href={menu.path} key={menu.path}>
+                  <a className='duration-300 hover:(text-blue-500 font-bold) '>
+                    {menu.label}
+                  </a>
+                </Link>
+              ))}
+              {!session ? (
+                <Link href='/auth'>
+                  <Button color='blue'>LogIn</Button>
+                </Link>
+              ) : (
+                <Button color='blue' variant='light' onClick={signOut}>
+                  LogOut
+                </Button>
+              )}
+            </div>
+          </Drawer>
         </nav>
       </header>
       <main>
