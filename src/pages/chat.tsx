@@ -28,12 +28,10 @@ const Chat = () => {
     // 変更を検知して再度getChatsする
     const chatsListener = supabase
       .from("chats")
-      .on("*", payload => {
+      .on("INSERT", payload => {
         getChats()
-        console.log("subscribe")
       })
       .subscribe()
-    console.log(chats)
     return () => {
       chatsListener.unsubscribe()
     }
@@ -41,7 +39,7 @@ const Chat = () => {
 
   return (
     <Layout>
-      <div className='flex justify-between'>
+      <div className='flex justify-between items-center'>
         <h1>タイムライン</h1>
         <ChatCreateButton />
       </div>

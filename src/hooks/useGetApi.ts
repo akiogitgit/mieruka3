@@ -38,7 +38,7 @@ export const useGetApi = <Data = any>(
 
 export const useSelectEq = <Data = any>(
   tableName: string,
-  { select = "*", column = "id", value = "a" }: SelectEq,
+  { select = "*", column = "id", value = "" }: SelectEq,
 ) => {
   const getData = useCallback(async () => {
     const { data, error } = await supabase
@@ -53,7 +53,7 @@ export const useSelectEq = <Data = any>(
   }, [column, select, tableName, value])
 
   return useQuery<Data[]>({
-    queryKey: [tableName],
+    queryKey: [tableName + column + value],
     queryFn: getData,
   })
 }

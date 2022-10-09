@@ -1,14 +1,4 @@
-import {
-  Button,
-  Checkbox,
-  LoadingOverlay,
-  MantineTransition,
-  Modal,
-  PasswordInput,
-  Stack,
-  TextInput,
-  Textarea,
-} from "@mantine/core"
+import { Button, LoadingOverlay, Modal, Stack, Textarea } from "@mantine/core"
 import { useForm } from "@mantine/form"
 import { FC, useCallback, useEffect, useState } from "react"
 import { useGetApi, useSelectEq } from "../hooks/useGetApi"
@@ -20,7 +10,6 @@ import { supabase } from "../utils/supabase"
 export const ChatCreateButton: FC = () => {
   const [opened, setOpened] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
-  const [userName, setUserName] = useState("")
   const session = useIsLoggedIn()
 
   const form = useForm<ChatFormParams>({
@@ -34,36 +23,29 @@ export const ChatCreateButton: FC = () => {
     },
   })
 
+  const { data: userName } = useSelectEq<{ name: string }>("profiles", {
+    select: "name",
+    column: "user_id",
+    value: session?.user?.id,
+  })
+  console.log("user_name22", userName)
+
+  // session, userNameが変わると、再計算する
   const getUserName = useCallback(async () => {
-    if (!session) {
+    if (!session || !userName) {
       return
     }
-    const { data, error, status } = await supabase
-      .from("profiles")
-      .select("name")
-      .eq("user_id", session?.user?.id)
-      .single()
-
-    if (error && status !== 406) {
-      throw new Error(error.message)
-    }
-    if (data) {
-      setUserName(data.name)
-      console.log("name: ", data.name)
-    }
-  }, [session])
-
-  useEffect(() => {
-    getUserName()
-  }, [getUserName])
-
-  useEffect(() => {
     form.setValues({
-      user_id: session?.user?.id || null,
-      user_name: userName,
+      user_id: session.user?.id,
+      user_name: userName[0].name,
       message: "",
     })
   }, [session, userName])
+
+  // 初回とgetUserNameの結果が変わる度に実行
+  useEffect(() => {
+    getUserName()
+  }, [getUserName])
 
   const createChat = useCallback(async () => {
     const { error } = await supabase.from("chats").insert(form.values, {
