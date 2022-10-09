@@ -9,6 +9,7 @@ import {
 } from "@mantine/core"
 import { useForm, yupResolver } from "@mantine/form"
 import { Session } from "@supabase/supabase-js"
+import { NextPage } from "next"
 import { useRouter } from "next/router"
 import React, { useCallback, useEffect, useState } from "react"
 import { Layout } from "../components/Layout"
@@ -19,7 +20,7 @@ import { supabase } from "../utils/supabase"
 // 一日の本数・一箱の金額の入力Form
 // email, password, name, num_tabaco_per_day, tabaco_price
 
-const Auth = () => {
+const Auth: NextPage = () => {
   const [isRegister, setIsRegister] = useState(false)
   const [error, setError] = useState("")
   const [session, setSession] = useState<Session | null>(null)

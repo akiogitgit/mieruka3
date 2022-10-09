@@ -11,7 +11,6 @@ export const useIsLoggedIn = () => {
     supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session)
     })
-    console.log(session)
   }, [setSession, session])
 
   return session
