@@ -1,34 +1,40 @@
 import { Avatar, Badge, Button, Indicator, Paper, Modal } from "@mantine/core"
-import React, { useState } from "react"
+import React, { useCallback, useEffect, useState } from "react"
 import { ChatCreateButton } from "../components/ChatCreateButton"
 import { Layout } from "../components/Layout"
-import { useGetApi } from "../hooks/useGetApi"
 import { Chat } from "../types/chat"
 import { supabase } from "../utils/supabase"
 
 // 全体チャットページ
 const Chat = () => {
-  const chats = [
-    {
-      id: "1",
-      created_at: "10/3",
-      user_id: "1",
-      user_name: "志賀烈斗",
-      message: "今日はもう吸ってやる！",
-      nice_count: "-100",
-    },
-    {
-      id: "2",
-      created_at: "10/30",
-      user_id: "11",
-      user_name: "あきお",
-      message: "今日は禁煙2日目！\nみんないいねよろしく",
-      nice_count: "100",
-    },
-  ]
+  const [chats, setChats] = useState<Chat[]>([])
 
-  const { data } = useGetApi<Chat>("profiles", {})
-  // console.log(data)
+  const getChats = useCallback(async () => {
+    const { data, error, status } = await supabase
+      .from<Chat>("chats")
+      .select("*")
+    if (error) {
+      throw error
+    }
+    if (data) {
+      setChats(data)
+    }
+  }, [])
+
+  useEffect(() => {
+    getChats()
+    const chatsListener = supabase
+      .from("chats")
+      .on("*", payload => {
+        getChats()
+        console.log("subscribe")
+      })
+      .subscribe()
+    console.log(chats)
+    return () => {
+      chatsListener.unsubscribe()
+    }
+  }, [])
 
   return (
     <Layout>

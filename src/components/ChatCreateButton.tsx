@@ -23,12 +23,6 @@ export const ChatCreateButton = () => {
   const [userName, setUserName] = useState("")
   const session = useIsLoggedIn()
 
-  // const { data: user_name } = useSelectEq("profiles", {
-  //   select: "name",
-  //   column: "user_id",
-  //   value: session?.user?.id || "a",
-  // })
-
   const form = useForm<ChatFormParams>({
     initialValues: {
       user_id: "",
@@ -72,7 +66,6 @@ export const ChatCreateButton = () => {
   }, [session, userName])
 
   const createChat = useCallback(async () => {
-    setIsLoading(true)
     const { error } = await supabase.from("chats").insert(form.values, {
       returning: "minimal", //返り値を無くす
     })
@@ -80,7 +73,7 @@ export const ChatCreateButton = () => {
     if (error) {
       throw new Error(error.message)
     }
-    setIsLoading(false)
+    console.log("投稿に成功しました", form.values)
   }, [form.values])
 
   const onSubmit = useCallback(async () => {
@@ -90,8 +83,10 @@ export const ChatCreateButton = () => {
 
     setTimeout(() => {
       setIsLoading(false)
-    }, 1500)
-  }, [form.values, createChat])
+      setOpened(false)
+      form.reset()
+    }, 300)
+  }, [form, createChat])
 
   if (!session) {
     return <></>
@@ -105,7 +100,6 @@ export const ChatCreateButton = () => {
         onClose={() => setOpened(false)}
         title='投稿メッセージを入力して下さい'
       >
-        {JSON.stringify(form.values)}
         <form onSubmit={form.onSubmit(onSubmit)}>
           <LoadingOverlay
             loaderProps={{ size: "md", color: "blue", variant: "oval" }}
