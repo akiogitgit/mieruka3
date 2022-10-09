@@ -1,6 +1,7 @@
 import { Avatar, Badge, Button, Indicator, Paper, Modal } from "@mantine/core"
 import React, { useCallback, useEffect, useState } from "react"
 import { ChatCreateButton } from "../components/ChatCreateButton"
+import { ChatItemGoodButton } from "../components/ChatItemGoodButton"
 import { Layout } from "../components/Layout"
 import { Chat } from "../types/chat"
 import { supabase } from "../utils/supabase"
@@ -9,6 +10,7 @@ import { supabase } from "../utils/supabase"
 const Chat = () => {
   const [chats, setChats] = useState<Chat[]>([])
 
+  // チャット一覧を取得し、chatsに格納
   const getChats = useCallback(async () => {
     const { data, error, status } = await supabase
       .from<Chat>("chats")
@@ -23,6 +25,7 @@ const Chat = () => {
 
   useEffect(() => {
     getChats()
+    // 変更を検知して再度getChatsする
     const chatsListener = supabase
       .from("chats")
       .on("*", payload => {
@@ -68,7 +71,9 @@ const Chat = () => {
               <Paper shadow='sm' p='sm'>
                 <div className='whitespace-pre-wrap'>{chat.message}</div>
                 <div className='cursor-pointer mt-2 text-sm inline'>
-                  <span className='text-lg'>👍</span>
+                  <span className='text-lg'>
+                    <ChatItemGoodButton chat={chat} />
+                  </span>
                   {chat.nice_count}
                 </div>
               </Paper>

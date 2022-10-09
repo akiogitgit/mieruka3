@@ -10,14 +10,14 @@ import {
   Textarea,
 } from "@mantine/core"
 import { useForm } from "@mantine/form"
-import { useCallback, useEffect, useState } from "react"
+import { FC, useCallback, useEffect, useState } from "react"
 import { useGetApi, useSelectEq } from "../hooks/useGetApi"
 import { useIsLoggedIn } from "../hooks/useIsLoggedIn"
 import { ChatFormParams } from "../types/chat"
 import { supabase } from "../utils/supabase"
 
 // ログインしていないなら押せなくする
-export const ChatCreateButton = () => {
+export const ChatCreateButton: FC = () => {
   const [opened, setOpened] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [userName, setUserName] = useState("")
