@@ -12,6 +12,7 @@ import { ChatCreateButton } from "../components/ChatCreateButton"
 import { ChatItemGoodButton } from "../components/ChatItemGoodButton"
 import { Layout } from "../components/Layout"
 import { Chat } from "../types/chat"
+import { changeDateFormat } from "../utils/changeDateFormat"
 import { supabase } from "../utils/supabase"
 
 // 全体チャットページ
@@ -83,8 +84,11 @@ const Chat = () => {
                 <p>{chat.user_name}</p>
                 <Paper shadow='sm' p='sm' className='min-w-200px max-w-400px'>
                   <div className='whitespace-pre-wrap'>{chat.message}</div>
-                  <div className='mt-2'>
+                  <div className='flex mt-2 justify-between items-center'>
                     <ChatItemGoodButton chat={chat} />
+                    <p className='text-gray-400'>
+                      {changeDateFormat(chat.created_at)}
+                    </p>
                   </div>
                 </Paper>
               </div>
