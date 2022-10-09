@@ -122,9 +122,7 @@ export const Layout: FC<Props> = ({ title = "禁煙ミエルカ", children }) =>
         </nav>
       </header>
       <main>
-        <div className='mx-auto max-w-1150px px-2 pt-100px pb-70px break-words sm:pt-130px'>
-          {children}
-        </div>
+        <div className='mx-auto max-w-1150px py-10 px-2'>{children}</div>
       </main>
     </div>
   )
