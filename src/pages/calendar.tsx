@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import { Calendar } from "@mantine/dates"
 import { NextPage } from "next"
 import { useGetApi } from "../hooks/useGetApi"
+import { Center } from "@mantine/core"
 
 // カレンダー（吸った日、禁断症状出た日）
 const CalendarGraph: NextPage = () => {
@@ -25,10 +26,12 @@ const CalendarGraph: NextPage = () => {
 
   return (
     <Layout>
-      <div>
+      <Center>
         <h1>カレンダー</h1>
-        <Calendar multiple value={value} onChange={() => 0} size='md' />
-      </div>
+      </Center>
+      <Center>
+        <Calendar multiple value={value} onChange={() => 0} size='xl' />
+      </Center>
     </Layout>
   )
 }
