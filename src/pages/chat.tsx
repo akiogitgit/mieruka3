@@ -66,13 +66,10 @@ const Chat = () => {
             </Indicator>
             <div>
               <p>{chat.user_name}</p>
-              <Paper shadow='sm' p='sm'>
+              <Paper shadow='sm' p='sm' className='min-w-200px max-w-400px'>
                 <div className='whitespace-pre-wrap'>{chat.message}</div>
-                <div className='cursor-pointer mt-2 text-sm inline'>
-                  <span className='text-lg'>
-                    <ChatItemGoodButton chat={chat} />
-                  </span>
-                  {chat.nice_count}
+                <div className='mt-2'>
+                  <ChatItemGoodButton chat={chat} />
                 </div>
               </Paper>
             </div>
