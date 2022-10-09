@@ -1,5 +1,6 @@
 import { Avatar, Badge, Button, Indicator, Paper, Modal } from "@mantine/core"
 import React, { useState } from "react"
+import { ChatCreateButton } from "../components/ChatCreateButton"
 import { Layout } from "../components/Layout"
 import { useGetApi } from "../hooks/useGetApi"
 import { Chat } from "../types/chat"
@@ -27,19 +28,13 @@ const Chat = () => {
   ]
 
   const { data } = useGetApi<Chat>("profiles", {})
-  const [opened, setOpened] = useState(false)
-  console.log(data)
+  // console.log(data)
 
   return (
     <Layout>
       <div className='flex justify-between'>
         <h1>タイムライン</h1>
-        <Button onClick={() => setOpened(true)}>投稿する</Button>
-        <Modal
-          opened={opened}
-          onClose={() => setOpened(false)}
-          title='Introduce yourself!'
-        ></Modal>
+        <ChatCreateButton />
       </div>
 
       <div className='flex flex-col mt-4 gap-6'>
