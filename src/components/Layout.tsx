@@ -68,12 +68,14 @@ export const Layout: FC<Props> = ({ title = "禁煙ミエルカ", children }) =>
             <div className='hidden md:(flex gap-3) '>
               {menus.map(menu => (
                 <Link href={menu.path} key={menu.path}>
-                  <a
-                    className={`${
-                      router.pathname === menu.path && "border-b"
-                    } font-bold text-white text-sm`}
-                  >
+                  <a className={`font-bold text-white text-sm group`}>
                     {menu.label}
+                    <div
+                      className={`
+                    ${
+                      router.pathname === menu.path ? "w-full" : "w-0"
+                    } bg-white h-1px mt-1 duration-150 group-hover:w-full`}
+                    ></div>
                   </a>
                 </Link>
               ))}
@@ -103,11 +105,17 @@ export const Layout: FC<Props> = ({ title = "禁煙ミエルカ", children }) =>
             position='right'
             size='sm'
           >
-            <div className='flex flex-col gap-3'>
+            <div className='flex flex-col gap-3 items-start'>
               {menus.map(menu => (
                 <Link href={menu.path} key={menu.path}>
-                  <a className='duration-300 hover:(text-blue-500 font-bold) '>
+                  <a
+                    // className='duration-300 hover:(text-blue-500 font-bold) '
+                    className={`${
+                      router.pathname === menu.path && "text-blue-500 font-bold"
+                    } group`}
+                  >
                     {menu.label}
+                    <div className='bg-blue-500 h-1 w-0 duration-100 group-hover:w-[100%]'></div>
                   </a>
                 </Link>
               ))}
@@ -116,7 +124,12 @@ export const Layout: FC<Props> = ({ title = "禁煙ミエルカ", children }) =>
                   <Button color='blue'>LogIn</Button>
                 </Link>
               ) : (
-                <Button color='blue' variant='light' onClick={signOut}>
+                <Button
+                  color='blue'
+                  variant='light'
+                  onClick={signOut}
+                  className='w-full'
+                >
                   LogOut
                 </Button>
               )}
@@ -125,7 +138,7 @@ export const Layout: FC<Props> = ({ title = "禁煙ミエルカ", children }) =>
         </nav>
       </header>
       <main>
-        <div className='mx-auto max-w-800px py-10 px-2'>{children}</div>
+        <div className='mx-auto max-w-800px py-10 px-4'>{children}</div>
       </main>
     </div>
   )
