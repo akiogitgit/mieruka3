@@ -3,6 +3,7 @@ import "windi.css"
 import { MantineProvider } from "@mantine/core"
 import { QueryClient, QueryClientProvider } from "react-query"
 import { ReactQueryDevtools } from "react-query/devtools"
+import "../styles/balloon.css"
 
 // reqct-query の設定。
 // fetchが失敗しても、retryしない

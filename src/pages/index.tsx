@@ -1,4 +1,4 @@
-import { Button, Center } from "@mantine/core"
+import { Button, Center, Stack, Image, Group } from "@mantine/core"
 import type { NextPage } from "next"
 import { Layout } from "../components/Layout"
 import Link from "next/link"
@@ -39,24 +39,52 @@ const Home: NextPage = () => {
   return (
     <Layout>
       <div>
-        <div className='flex gap-3'>
-          <button className='font-bold bg-blue-500 text-white py-2.3 px-3'>
-            button
-          </button>
-          <Button>button</Button>
-        </div>
-        <ul className='flex flex-wrap gap-10'>
-          {samples?.map(sample => (
-            <li key={sample.id} className='w-200px'>
-              <p>{sample.id}</p>
-              <p>{sample.text}</p>
-              <p>{sample.label}</p>
-              <p>{sample.published ? "true" : "false"}</p>
-            </li>
-          ))}
-        </ul>
+        <Stack className='flex flex-wrap gap-10'>
+          <div>
+            継続日数
+            <div></div>
+          </div>
+          <div>節約金額</div>
+          <div>寿命伸びた</div>
+          <div>応援メッセージ</div>
+          <div>リスクが下がった</div>
+          <div>
+            臓器くん
+            <Group spacing='xs'>
+              <div>
+                <div
+                  style={{
+                    width: 240,
+                    marginLeft: "auto",
+                    marginRight: "auto",
+                  }}
+                >
+                  <div>
+                    <Image
+                      radius='md'
+                      src='/zouki/kanzo.png'
+                      alt='zouki image'
+                      caption=''
+                    />
+                  </div>
+                </div>
+                <div>臓器くんが死にそうです！禁煙してください！</div>
+              </div>
+              <div className='mb-5 balloon4'>
+                <p>寿命が-1000日伸びたよ！</p>
+              </div>
+            </Group>
+          </div>
+        </Stack>
         <Center>
-          <Link href='/sample'>sampleページに移動</Link>
+          <Stack>
+            <Button radius='xl' size='xl'>
+              😖 助けて
+            </Button>
+            <Button radius='xl' size='xl'>
+              😭 吸っちゃったあ
+            </Button>
+          </Stack>
         </Center>
       </div>
     </Layout>
