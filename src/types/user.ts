@@ -12,7 +12,7 @@ export type AuthUser = {
 }
 
 export type Profile = {
-  id: string
+  user_id: string
   name: string
   created_at: string
   num_tabaco_per_day: number
