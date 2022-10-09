@@ -83,7 +83,6 @@ const Home: NextPage = () => {
     const { error } = await supabase.from("smoked").insert(
       {
         user_id: userId,
-        num_tabaco: 50,
       },
       {
         returning: "minimal", //返り値を無くす
