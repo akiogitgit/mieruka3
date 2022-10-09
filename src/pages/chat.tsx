@@ -45,6 +45,10 @@ const Chat = () => {
     }
   }, [])
 
+  const userAvatarNumber = useCallback((user_id: string): number => {
+    return Number(String(user_id).split("-")[2])
+  }, [])
+
   return (
     <Layout>
       <div className='flex justify-between items-center'>
@@ -70,7 +74,9 @@ const Chat = () => {
                   size='lg'
                   radius='xl'
                   className='transform duration-300 hover:scale-105'
-                  src='https://source.unsplash.com/random'
+                  src={`https://www.gravatar.com/avatar/${userAvatarNumber(
+                    chat.user_id,
+                  )}/?d=robohash`}
                 />
               </Indicator>
               <div>

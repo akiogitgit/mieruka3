@@ -1,7 +1,7 @@
 export type Chat = {
   id: number
   created_at: string
-  user_id: string | null
+  user_id: string
   user_name: string
   message: string
   nice_count: number
