@@ -107,7 +107,7 @@ const Auth: NextPage = () => {
 
       showNotification({
         title: "新規作成",
-        message: "Hey there, your code is awesome! 🤥",
+        message: "",
       })
     } else {
       // ログイン
@@ -123,7 +123,7 @@ const Auth: NextPage = () => {
     }
     showNotification({
       title: "ログイン",
-      message: "Hey there, your code is awesome! 🤥",
+      message: "",
     })
     form.reset() // フォームをリセット
     router.push("/") // index.tsxに移動

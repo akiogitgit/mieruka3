@@ -5,6 +5,7 @@ import { useGetApi, useSelectEq } from "../hooks/useGetApi"
 import { useIsLoggedIn } from "../hooks/useIsLoggedIn"
 import { ChatFormParams } from "../types/chat"
 import { supabase } from "../utils/supabase"
+import { showNotification } from "@mantine/notifications"
 
 // ログインしていないなら押せなくする
 export const ChatCreateButton: FC = () => {
@@ -63,6 +64,10 @@ export const ChatCreateButton: FC = () => {
     setIsLoading(true)
     await createChat()
 
+    showNotification({
+      title: "投稿を送信しました",
+      message: "",
+    })
     setTimeout(() => {
       setIsLoading(false)
       setOpened(false)
