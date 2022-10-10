@@ -1,19 +1,19 @@
-import { Avatar, Card, Center, Group, Indicator } from "@mantine/core"
+import { Avatar, Card, Center, Group, Indicator, Text } from "@mantine/core"
 import Image from "next/image"
 import { FC, useCallback, useEffect, useState } from "react"
 import chat from "../../pages/chat"
 
 type Props = {
   userId: string
-  userName: string
+  userName: string | null
 }
 
 export const User: FC<Props> = ({ userId, userName }) => {
-  const userAvatarNumber = useCallback((user_id: string): number => {
-    return Number(String(user_id).split("-")[2])
+  const userAvatarNumber = useCallback((userId: string): number => {
+    return Number(String(userId).split("-")[2])
   }, [])
   return (
-    <div className='flex gap-3 items-center'>
+    <div className='flex h-20 gap-3 items-center'>
       <Indicator
         inline
         label=''
@@ -23,6 +23,7 @@ export const User: FC<Props> = ({ userId, userName }) => {
         position='bottom-end'
         withBorder // 外側の白
         processing
+        ml={10}
       >
         <Avatar
           size='lg'
@@ -34,7 +35,7 @@ export const User: FC<Props> = ({ userId, userName }) => {
         />
       </Indicator>
       <div>
-        <p>{userName}</p>
+        <Text>{userName ?? "ゲスト"}</Text>
       </div>
     </div>
   )

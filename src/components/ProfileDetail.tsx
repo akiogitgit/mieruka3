@@ -44,7 +44,7 @@ export const ProfileDetail: FC = () => {
   const [nonSmokingDuration, setNonSmokingDuration] = useState(0)
   const [savingPrice, setSavingPrice] = useState(0)
   const [lifespanStr, setLifespanStr] = useState("")
-  const [userName, setUserName] = useState("")
+  const [userName, setUserName] = useState<string | null>(null)
 
   // ログインしていたら、継続禁煙時間などをセット
   const setRecordings = useCallback(async () => {
@@ -98,7 +98,7 @@ export const ProfileDetail: FC = () => {
       `${lifespanDay}日${lifespanHour}時間${lifespanMinute}分${lifespanSecond}秒`,
     )
     // ユーザ名取得
-    setUserName(profileData?.name ?? "")
+    setUserName(profileData?.name ?? "ゲスト")
   }, [session])
 
   useEffect(() => {
