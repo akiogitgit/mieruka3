@@ -35,7 +35,7 @@ const DirectMessage = () => {
   })
 
   const addMsg = useCallback(() => {
-    console.table(directMessages)
+    // console.table(directMessages)
     setDirectMessages(v => [
       ...v,
       {
@@ -53,7 +53,7 @@ const DirectMessage = () => {
         message: form.values.text,
       },
     ])
-    // form.reset()
+    form.reset()
     console.log(directMessages)
     setTimeout(addMsg, 3000)
   }
@@ -96,20 +96,29 @@ const DirectMessage = () => {
           </div>
         ))}
 
-        <Stack mt={20}>
-          <form onSubmit={form.onSubmit(onSubmit)}>
-            <Textarea
-              placeholder='お医者さんへのメッセージを入力してください'
-              // なくても良さそう↓
-              label='お医者さんへのメッセージ'
-              {...form.getInputProps("text")}
-            />
-            {/* {JSsON.stringify(form.values)} */}
-            <Button type='submit'>
-              <AiOutlineSend />
-            </Button>
-          </form>
-        </Stack>
+        <Affix
+          position={{ bottom: 0 }}
+          className='flex w-[100%] items-center justify-center '
+        >
+          <div className='bg-light-50 w-[calc(100%-1rem)]'>
+            <form onSubmit={form.onSubmit(onSubmit)}>
+              <div className='flex flex-col items-end'>
+                <Textarea
+                  placeholder='お医者さんへのメッセージを入力してください'
+                  // なくても良さそう↓
+                  // label='お医者さんへのメッセージ'
+                  {...form.getInputProps("text")}
+                  className='w-[100%]'
+                  minRows={3}
+                />
+
+                <Button type='submit' className='w-20 justify-end' mt={7}>
+                  <AiOutlineSend />
+                </Button>
+              </div>
+            </form>
+          </div>
+        </Affix>
       </div>
     </Layout>
   )
