@@ -15,6 +15,7 @@ import React, { useCallback, useEffect, useState } from "react"
 import { Layout } from "../components/Layout"
 import { AuthFormParams } from "../types/user"
 import { supabase } from "../utils/supabase"
+import { showNotification } from "@mantine/notifications"
 
 // 新規登録・ログインページ
 // 一日の本数・一箱の金額の入力Form
@@ -103,6 +104,11 @@ const Auth: NextPage = () => {
         // supabaseが取得出来ないエラー
         console.error(e)
       }
+
+      showNotification({
+        title: "新規作成",
+        message: "Hey there, your code is awesome! 🤥",
+      })
     } else {
       // ログイン
       const { error } = await supabase.auth.signIn({
@@ -115,7 +121,10 @@ const Auth: NextPage = () => {
         return
       }
     }
-
+    showNotification({
+      title: "ログイン",
+      message: "Hey there, your code is awesome! 🤥",
+    })
     form.reset() // フォームをリセット
     router.push("/") // index.tsxに移動
   }, [form, isRegister, router])
@@ -136,18 +145,11 @@ const Auth: NextPage = () => {
     console.log(session)
   }, [setSession, session])
 
-  // ログアウト
-  const signOut = useCallback(() => {
-    supabase.auth.signOut()
-    console.log("signOut")
-  }, [])
-
   return (
     <Layout>
       <Center>
         <div className='w-300px'>
           <div className='flex flex-col justify-center items-center'>
-            {/* <Center> */}
             {error && (
               <Alert
                 mt='md'
@@ -159,20 +161,7 @@ const Auth: NextPage = () => {
               </Alert>
             )}
           </div>
-          <div>
-            {session ? (
-              <Button
-                color='red'
-                variant='gradient'
-                gradient={{ from: "yellow", to: "red" }}
-                onClick={signOut}
-              >
-                Logout
-              </Button>
-            ) : (
-              "ログインして下さい"
-            )}
-          </div>
+
           {/* form(定義したやつ)をsubmitする時onSubmitを発火 */}
           <form onSubmit={form.onSubmit(onSubmit)}>
             <div className='flex flex-col gap-3'>
