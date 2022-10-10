@@ -12,8 +12,9 @@ export const ZoukiKun: FC<Props> = ({ nonSmokingDuration }) => {
     if (nonSmokingDuration > 0.5) {
       setCheeringMessage("aaaa")
     }
+    setCheeringMessage("血中の酸素濃度が上昇してきたよ")
     console.log("nonSmokingDuration", nonSmokingDuration)
-  }, [])
+  }, [nonSmokingDuration])
 
   return (
     <Center>
