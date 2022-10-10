@@ -1,9 +1,12 @@
-import React from "react"
+import React, { useCallback } from "react"
 import { useState } from "react"
 import { Layout } from "../components/Layout"
+import { AiOutlineSend } from "react-icons/ai"
 
 import {
+  Affix,
   Button,
+  Center,
   Indicator,
   Avatar,
   Paper,
@@ -17,7 +20,6 @@ import { useForm } from "@mantine/form"
 const DirectMessage = () => {
   const [directMessages, setDirectMessages] = useState([
     {
-      id: 1,
       user_name: "Doctor",
       message: "何かあったらメッセージをください",
     },
@@ -32,23 +34,35 @@ const DirectMessage = () => {
     },
   })
 
-  const onSubmit = () => {
-    setDirectMessages([
-      ...directMessages,
+  const addMsg = useCallback(() => {
+    console.table(directMessages)
+    setDirectMessages(v => [
+      ...v,
       {
-        id: 2,
+        user_name: "Doctor",
+        message: "我慢してください",
+      },
+    ])
+  }, [])
+
+  const onSubmit = () => {
+    setDirectMessages(v => [
+      ...v,
+      {
         user_name: "tabakoMan",
         message: form.values.text,
       },
     ])
-    form.reset()
+    // form.reset()
     console.log(directMessages)
+    setTimeout(addMsg, 3000)
   }
+
   return (
     <Layout>
       <div className='flex flex-col mt-4 gap-6'>
-        {directMessages?.map(directMessage => (
-          <div key={directMessage.id} className='flex gap-3 items-start'>
+        {directMessages?.map((directMessage, index) => (
+          <div key={index} className='flex gap-3 items-start'>
             <Indicator
               inline
               label=''
@@ -90,8 +104,10 @@ const DirectMessage = () => {
               label='お医者さんへのメッセージ'
               {...form.getInputProps("text")}
             />
-            {/* {JSON.stringify(form.values)} */}
-            <Button onClick={onSubmit}>投稿</Button>
+            {/* {JSsON.stringify(form.values)} */}
+            <Button type='submit'>
+              <AiOutlineSend />
+            </Button>
           </form>
         </Stack>
       </div>
