@@ -1,26 +1,6 @@
-import {
-  Button,
-  Center,
-  Stack,
-  Image,
-  Group,
-  NumberInput,
-  Text,
-  Modal,
-  LoadingOverlay,
-} from "@mantine/core"
+import { Center, Stack } from "@mantine/core"
 import type { NextPage } from "next"
 import { Layout } from "../components/Layout"
-import Link from "next/link"
-import { Sample } from "../types/sample"
-import { useCallback, useEffect, useState } from "react"
-import { Session } from "@supabase/supabase-js"
-import { supabase } from "../utils/supabase"
-import { useGetApi } from "../hooks/useGetApi"
-import { useIsLoggedIn } from "../hooks/useIsLoggedIn"
-import { Smoked } from "../types/smoked"
-import { Profile } from "../types/user"
-import { timeStamp } from "console"
 import { ProfileDetail } from "../components/ProfileDetail"
 import SmokedButton from "../components/SmokedButton"
 
@@ -29,10 +9,6 @@ import SmokedButton from "../components/SmokedButton"
 // 臓器くん
 
 const Home: NextPage = () => {
-  const session = useIsLoggedIn()
-
-  console.log("sesion", session)
-
   return (
     <Layout>
       <div>
