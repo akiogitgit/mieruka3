@@ -106,7 +106,7 @@ const Auth: NextPage = () => {
       }
 
       showNotification({
-        title: "新規作成",
+        title: "ユーザーの新規作成に成功しました",
         message: "",
       })
     } else {
@@ -122,7 +122,7 @@ const Auth: NextPage = () => {
       }
     }
     showNotification({
-      title: "ログイン",
+      title: "ログインに成功しました",
       message: "",
     })
     form.reset() // フォームをリセット

@@ -6,6 +6,7 @@ import { Burger, Button, Drawer } from "@mantine/core"
 import { supabase } from "../utils/supabase"
 import { useIsLoggedIn } from "../hooks/useIsLoggedIn"
 import { useRouter } from "next/router"
+import { showNotification } from "@mantine/notifications"
 
 type Props = {
   children: ReactNode
@@ -28,6 +29,10 @@ export const Layout: FC<Props> = ({ title = "禁煙ミエルカ", children }) =>
   // ログアウト
   const signOut = useCallback(() => {
     supabase.auth.signOut()
+    showNotification({
+      title: "ログアウトに成功しました",
+      message: "",
+    })
     console.log("signOut")
   }, [])
 
