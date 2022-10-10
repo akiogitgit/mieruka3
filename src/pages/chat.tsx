@@ -24,6 +24,8 @@ const Chat = () => {
     const { data, error, status } = await supabase
       .from<Chat>("chats")
       .select("*")
+      .order("created_at", { ascending: false })
+
     if (error) {
       throw error
     }
