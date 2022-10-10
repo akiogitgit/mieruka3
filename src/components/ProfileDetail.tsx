@@ -4,8 +4,8 @@ import { useIsLoggedIn } from "../hooks/useIsLoggedIn"
 import { Smoked } from "../types/smoked"
 import { Profile } from "../types/user"
 import { supabase } from "../utils/supabase"
-import { calcLifespan } from "./profile/lifespan"
 import { calcSavingAmount } from "./profile/savingMoney"
+import { calcSplitTime } from "./profile/splitSeconds"
 import { User } from "./profile/User"
 import { ZoukiKun } from "./profile/ZoukiKun"
 
@@ -40,10 +40,12 @@ async function getSmokedCreatedAt(userId: string) {
 
 export const ProfileDetail: FC = () => {
   const session = useIsLoggedIn()
-
-  const [nonSmokingDuration, setNonSmokingDuration] = useState(0)
+  const [continuousNonSmokingDuration, setContinuousNonSmokingDuration] =
+    useState(0)
+  const [continuousNonSmokingDurationStr, setContinuousNonSmokingDurationStr] =
+    useState("0日")
   const [savingPrice, setSavingPrice] = useState(0)
-  const [lifespanStr, setLifespanStr] = useState("")
+  const [lifespanStr, setLifespanStr] = useState("0日")
   const [userName, setUserName] = useState<string | null>(null)
 
   // ログインしていたら、継続禁煙時間などをセット
@@ -58,22 +60,33 @@ export const ProfileDetail: FC = () => {
     console.log("profile data", profileData)
     console.log("smoked data", smokedData)
     // 継続禁煙時間
-    let duration
+    let continuousNonSmokingDurationSecond
     const registeredDate = new Date(String(profileData?.created_at))
-    const registeredDurationSecond = Date.now() - registeredDate.getTime()
-    const registeredDurationDay = registeredDurationSecond / 60 / 60 / 24 / 1000
-    console.log("登録してから現在まで", registeredDurationDay)
+    const registeredDurationSecond = ~~(
+      (Date.now() - registeredDate.getTime()) /
+      1000
+    )
+    const registeredDurationDay = registeredDurationSecond / 24 / 60 / 60
     if (
       smokedData !== undefined &&
       smokedData !== null &&
       smokedData?.length > 0
     ) {
       const startNonSmoking = new Date(String(smokedData[0]?.created_at))
-      duration = (Date.now() - startNonSmoking.getTime()) / 60 / 60 / 24 / 1000
+      continuousNonSmokingDurationSecond = ~~(
+        (Date.now() - startNonSmoking.getTime()) /
+        1000
+      )
     } else {
-      duration = registeredDurationDay
+      continuousNonSmokingDurationSecond = registeredDurationSecond
     }
-    setNonSmokingDuration(duration)
+    const continuousNonSmoking = calcSplitTime(
+      continuousNonSmokingDurationSecond,
+    )
+    setContinuousNonSmokingDurationStr(
+      `${continuousNonSmoking.day}日${continuousNonSmoking.hour}時間${continuousNonSmoking.minute}分${continuousNonSmoking.second}秒`,
+    )
+    setContinuousNonSmokingDuration(continuousNonSmokingDurationSecond)
 
     // 節約金額
     const tabacoPrice = profileData?.tabaco_price ?? 0
@@ -91,11 +104,12 @@ export const ProfileDetail: FC = () => {
     // 伸びた寿命
     // ((禁煙開始日から、今日までの吸った本数合計 * -330s) +
     // (禁煙開始日から、今日までの日数) * 一日に吸う本数 * 330s)
-    const { lifespanSecond, lifespanMinute, lifespanHour, lifespanDay } =
-      calcLifespan(registeredDurationDay, numTabacoPerDay, smokingCountAll)
+    let lifespanSecond = ~~(registeredDurationDay * numTabacoPerDay * 330)
+    lifespanSecond = lifespanSecond - smokingCountAll * 330
+    const lifespan = calcSplitTime(lifespanSecond)
 
     setLifespanStr(
-      `${lifespanDay}日${lifespanHour}時間${lifespanMinute}分${lifespanSecond}秒`,
+      `${lifespan.day}日${lifespan.hour}時間${lifespan.minute}分${lifespan.second}秒`,
     )
     // ユーザ名取得
     setUserName(profileData?.name ?? "ゲスト")
@@ -114,7 +128,7 @@ export const ProfileDetail: FC = () => {
         <Group position='apart' mt='md' mb='xs'>
           <div>
             <Text weight={700}>禁煙継続日数</Text>
-            <div>{nonSmokingDuration}日</div>
+            <div>{continuousNonSmokingDurationStr}</div>
           </div>
           <div>
             <Text weight={700}>節約金額</Text>
@@ -126,7 +140,7 @@ export const ProfileDetail: FC = () => {
           </div>
         </Group>
       </Card>
-      <ZoukiKun nonSmokingDuration={nonSmokingDuration} />
+      <ZoukiKun nonSmokingDuration={continuousNonSmokingDuration} />
     </>
   )
 }
