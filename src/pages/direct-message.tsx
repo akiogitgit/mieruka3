@@ -62,7 +62,15 @@ const DirectMessage = () => {
     <Layout>
       <div className='flex flex-col mt-4 gap-6'>
         {directMessages?.map((directMessage, index) => (
-          <div key={index} className='flex gap-3 items-start'>
+          <div
+            key={index}
+            // className='flex gap-3 items-start justify-end'
+            className={`${
+              directMessage.user_name === "tabakoMan"
+                ? "justify-content-end flex-row-reverse"
+                : ""
+            } flex gap-3 items-start`}
+          >
             <Indicator
               inline
               label=''
@@ -112,7 +120,7 @@ const DirectMessage = () => {
                   minRows={3}
                 />
 
-                <Button type='submit' className='w-20 justify-end' mt={7}>
+                <Button type='submit' className='w-20 justify-end' mt={6}>
                   <AiOutlineSend />
                 </Button>
               </div>
