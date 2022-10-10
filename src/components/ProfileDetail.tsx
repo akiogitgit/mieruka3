@@ -1,4 +1,4 @@
-import { Center, Group, Image } from "@mantine/core"
+import { Card, Center, Group, Text } from "@mantine/core"
 import { FC, useCallback, useEffect, useState } from "react"
 import { useIsLoggedIn } from "../hooks/useIsLoggedIn"
 import { Smoked } from "../types/smoked"
@@ -6,6 +6,7 @@ import { Profile } from "../types/user"
 import { supabase } from "../utils/supabase"
 import { calcLifespan } from "./profile/lifespan"
 import { calcSavingAmount } from "./profile/savingMoney"
+import { User } from "./profile/User"
 import { ZoukiKun } from "./profile/ZoukiKun"
 
 async function getProfile(userId: string) {
@@ -43,6 +44,7 @@ export const ProfileDetail: FC = () => {
   const [nonSmokingDuration, setNonSmokingDuration] = useState(0)
   const [savingPrice, setSavingPrice] = useState(0)
   const [lifespanStr, setLifespanStr] = useState("")
+  const [userName, setUserName] = useState("")
 
   // ログインしていたら、継続禁煙時間などをセット
   const setRecordings = useCallback(async () => {
@@ -95,6 +97,8 @@ export const ProfileDetail: FC = () => {
     setLifespanStr(
       `${lifespanDay}日${lifespanHour}時間${lifespanMinute}分${lifespanSecond}秒`,
     )
+    // ユーザ名取得
+    setUserName(profileData?.name ?? "")
   }, [session])
 
   useEffect(() => {
@@ -103,18 +107,25 @@ export const ProfileDetail: FC = () => {
 
   return (
     <>
-      <div>
-        禁煙継続日数
-        <div>{nonSmokingDuration}日</div>
-      </div>
-      <div>
-        節約金額
-        <div>{savingPrice}円</div>
-      </div>
-      <div>
-        伸びた寿命
-        <div>{lifespanStr}</div>
-      </div>
+      <Card shadow='sm' p='lg' radius='md' withBorder>
+        <Card.Section component='a'>
+          <User userName={userName} userId={session?.user?.id ?? ""} />
+        </Card.Section>
+        <Group position='apart' mt='md' mb='xs'>
+          <div>
+            <Text weight={700}>禁煙継続日数</Text>
+            <div>{nonSmokingDuration}日</div>
+          </div>
+          <div>
+            <Text weight={700}>節約金額</Text>
+            <div>{savingPrice}円</div>
+          </div>
+          <div>
+            <Text weight={700}>伸びた寿命</Text>
+            <div>{lifespanStr}</div>
+          </div>
+        </Group>
+      </Card>
       <ZoukiKun nonSmokingDuration={nonSmokingDuration} />
     </>
   )
