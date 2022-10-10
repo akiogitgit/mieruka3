@@ -61,7 +61,11 @@ export const ProfileDetail: FC = () => {
     const registeredDurationSecond = Date.now() - registeredDate.getTime()
     const registeredDurationDay = registeredDurationSecond / 60 / 60 / 24 / 1000
     console.log("登録してから現在まで", registeredDurationDay)
-    if (smokedData !== undefined && smokedData !== null) {
+    if (
+      smokedData !== undefined &&
+      smokedData !== null &&
+      smokedData?.length > 0
+    ) {
       const startNonSmoking = new Date(String(smokedData[0]?.created_at))
       duration = (Date.now() - startNonSmoking.getTime()) / 60 / 60 / 24 / 1000
     } else {
