@@ -18,7 +18,6 @@ const SmokedButton = () => {
     setOpened(false)
   }, [])
 
-  const rollZoukikun = useCallback(() => {}, [])
   const createSmokedCount = useCallback(async () => {
     const userId = session?.user?.id
     if (userId === undefined || userId === null) {
