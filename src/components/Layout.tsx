@@ -1,4 +1,4 @@
-import React, { FC, ReactNode, useCallback, useState } from "react"
+import React, { FC, ReactNode, useCallback, useEffect, useState } from "react"
 import Head from "next/head"
 import Link from "next/link"
 import Image from "next/image"
@@ -12,7 +12,6 @@ type Props = {
   title?: string
 }
 
-// NOTE: authは別にする。ログインしていたらログアウトボタン表示
 const menus = [
   { path: "/", label: "ホーム" },
   { path: "/calendar", label: "カレンダー" },
@@ -22,6 +21,7 @@ const menus = [
 
 export const Layout: FC<Props> = ({ title = "禁煙ミエルカ", children }) => {
   const [opened, setOpened] = useState(false)
+  const [menuAnimateFire, setMenuAnimateFire] = useState(false)
   const session = useIsLoggedIn()
   const router = useRouter()
 
@@ -29,6 +29,20 @@ export const Layout: FC<Props> = ({ title = "禁煙ミエルカ", children }) =>
   const signOut = useCallback(() => {
     supabase.auth.signOut()
     console.log("signOut")
+  }, [])
+
+  const onOpenMenu = useCallback(() => {
+    setOpened(true)
+    setTimeout(() => {
+      setMenuAnimateFire(true)
+    }, 100)
+  }, [])
+
+  const onCloseMenu = useCallback(() => {
+    setOpened(false)
+    setTimeout(() => {
+      setMenuAnimateFire(false)
+    }, 100)
   }, [])
 
   return (
@@ -58,11 +72,11 @@ export const Layout: FC<Props> = ({ title = "禁煙ミエルカ", children }) =>
             </h1>
           </Link>
 
-          <div className='flex flex-row-reverse gap-3 items-center sm:flex-row'>
+          <div className='flex flex-row-reverse gap-3 items-center md:flex-row'>
             <Burger
               className='md:hidden'
               opened={opened}
-              onClick={() => setOpened(o => !o)}
+              onClick={onOpenMenu}
               color='white'
             />
             <div className='hidden md:(flex gap-3) '>
@@ -100,30 +114,32 @@ export const Layout: FC<Props> = ({ title = "禁煙ミエルカ", children }) =>
 
           <Drawer
             opened={opened}
-            onClose={() => setOpened(false)}
+            onClose={onCloseMenu}
             padding='xl'
             position='right'
             size='sm'
           >
             <div className='flex flex-col gap-3 items-start'>
-              {menus.map(menu => (
+              {menus.map((menu, index) => (
                 <Link href={menu.path} key={menu.path}>
                   <a
-                    // className='duration-300 hover:(text-blue-500 font-bold) '
                     className={`${
-                      router.pathname === menu.path && "text-blue-500 font-bold"
-                    } group`}
+                      router.pathname === menu.path &&
+                      "text-blue-500 font-bold "
+                    }
+                      ${menuAnimateFire ? "translate-x-0" : "translate-x-20"}
+                      ${index === 1 && "delay-50"}
+                      ${index === 2 && "delay-100"}
+                      ${index === 3 && "delay-150"}
+                    } group transform ease-in duration-300 ,
+                    )}`}
                   >
                     {menu.label}
                     <div className='bg-blue-500 h-1 w-0 duration-100 group-hover:w-[100%]'></div>
                   </a>
                 </Link>
               ))}
-              {!session ? (
-                <Link href='/auth'>
-                  <Button color='blue'>LogIn</Button>
-                </Link>
-              ) : (
+              {session ? (
                 <Button
                   color='blue'
                   variant='light'
@@ -132,6 +148,12 @@ export const Layout: FC<Props> = ({ title = "禁煙ミエルカ", children }) =>
                 >
                   LogOut
                 </Button>
+              ) : (
+                <Link href='/auth'>
+                  <Button color='blue' className='w-full'>
+                    LogIn
+                  </Button>
+                </Link>
               )}
             </div>
           </Drawer>
