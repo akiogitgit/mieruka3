@@ -74,55 +74,61 @@ const SmokedButton = () => {
   }, [createHelpChat])
 
   return (
-    <>
-      <Stack>
-        <Button
-          radius='xl'
-          size='xl'
-          onClick={() => setOpenedHelpModal(v => !v)}
-        >
-          😖 助けて
+    <div>
+      <div className='flex flex-col gap-3 items-center'>
+        <div className='flex flex-col gap-3 sm:flex-row'>
+          <Button
+            radius='xl'
+            size='xl'
+            onClick={() => setOpenedHelpModal(v => !v)}
+            color='red'
+          >
+            😖 助けて
+          </Button>
+          <Button radius='xl' size='xl' onClick={openSmokedModal}>
+            😭 吸っちゃったあ
+          </Button>
+        </div>
+        <Button radius='xl' size='xl' color='green'>
+          SNSに成果を共有
         </Button>
-        <Button radius='xl' size='xl' onClick={openSmokedModal}>
-          😭 吸っちゃったあ
-        </Button>
-        <Modal
-          opened={openedHelpModal}
-          onClose={() => setOpenedHelpModal(v => !v)}
-          centered
-        >
-          <div className='ml-4'>
-            <p className='font-bold text-2xl'>がんばれ！！負けるな！！</p>
-            <p className='mt-30px'>禁断症状の対処法</p>
-            <Stack spacing='sm' my='md' ml='sm'>
-              <p>① 甘いものを食べてみよう！</p>
-              <p>② 運動してみよう！</p>
-              <p>③ ガムたばこで我慢しよう！</p>
-            </Stack>
-
-            <p className='mt-10'>現在24人がたばこを我慢しています</p>
-            <div className='flex mt-5 justify-between'>
-              <Link href='/direct-message'>
-                <Button>お医者さんにDMする</Button>
-              </Link>
-              <Button onClick={onClickHelpButton}>みんなに助けを求める</Button>
-            </div>
-          </div>
-        </Modal>
-        <Modal
-          opened={opened}
-          onClose={closeSmokedModal}
-          title='本当に吸っちゃったの。。。？'
-          centered
-        >
-          <Stack spacing='md'>
-            <div className='flex justify-end'>
-              <Button onClick={createSmokedCount}>はい</Button>
-            </div>
+      </div>
+      <Modal
+        opened={openedHelpModal}
+        onClose={() => setOpenedHelpModal(v => !v)}
+        centered
+      >
+        <div className='ml-4'>
+          <p className='font-bold text-2xl'>がんばれ！！負けるな！！</p>
+          <p className='mt-30px'>禁断症状の対処法</p>
+          <Stack spacing='sm' my='md' ml='sm'>
+            <p>① 甘いものを食べてみよう！</p>
+            <p>② 運動してみよう！</p>
+            <p>③ ガムたばこで我慢しよう！</p>
           </Stack>
-        </Modal>
-      </Stack>
-    </>
+
+          <p className='mt-10'>現在24人がたばこを我慢しています</p>
+          <div className='flex mt-5 justify-between'>
+            <Link href='/direct-message'>
+              <Button>お医者さんにDMする</Button>
+            </Link>
+            <Button onClick={onClickHelpButton}>みんなに助けを求める</Button>
+          </div>
+        </div>
+      </Modal>
+      <Modal
+        opened={opened}
+        onClose={closeSmokedModal}
+        title='本当に吸っちゃったの。。。？'
+        centered
+      >
+        <Stack spacing='md'>
+          <div className='flex justify-end'>
+            <Button onClick={createSmokedCount}>はい</Button>
+          </div>
+        </Stack>
+      </Modal>
+    </div>
   )
 }
 

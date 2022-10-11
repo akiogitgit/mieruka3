@@ -3,6 +3,7 @@ import type { NextPage } from "next"
 import { Layout } from "../components/Layout"
 import { ProfileDetail } from "../components/ProfileDetail"
 import SmokedButton from "../components/SmokedButton"
+import { SmokedChart } from "../components/SmokedChart"
 import useStore from "../store"
 
 // メイン画面（継続日数、節約金額、応援メッセージ、リスクが下がった）
@@ -11,6 +12,7 @@ import useStore from "../store"
 
 const Home: NextPage = () => {
   const session = useStore(state => state.session)
+  const userInfo = useStore(state => state.userInfo)
 
   return (
     <Layout>
@@ -20,9 +22,12 @@ const Home: NextPage = () => {
           <ProfileDetail />
         </Stack>
         {session && (
-          <Center>
+          <div>
             <SmokedButton />
-          </Center>
+            <div className='mt-6'>
+              <SmokedChart userName={userInfo?.name ?? "ゲスト"} />
+            </div>
+          </div>
         )}
       </div>
     </Layout>

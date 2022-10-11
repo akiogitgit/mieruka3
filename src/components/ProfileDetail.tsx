@@ -127,7 +127,6 @@ export const ProfileDetail: FC = () => {
           </div>
         </Group>
       </Card>
-      {session && <SmokedChart userName={userInfo?.name ?? "ゲスト"} />}
       {session && <ZoukiKun nonSmokingDuration={nonSmokingDuration} />}
     </>
   )

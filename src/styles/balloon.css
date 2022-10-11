@@ -1,9 +1,7 @@
 .balloon4 {
   position: relative;
-  /* margin: 2em 0 2em 40px; */
-  margin-bottom: 8rem;
   padding: 15px;
-  background: #fff0c6;
+  background: #4a4a;
   border-radius: 30px;
 }
 
@@ -14,7 +12,7 @@
   width: 13px;
   height: 12px;
   bottom: 0;
-  background: #fff0c6;
+  background: #4a4a;
   border-radius: 50%;
 }
 
@@ -25,10 +23,6 @@
   width: 20px;
   height: 18px;
   bottom: 3px;
-  background: #fff0c6;
+  background: #4a4a;
   border-radius: 50%;
-}
-.balloon4 p {
-  margin: 0;
-  padding: 0;
 }
