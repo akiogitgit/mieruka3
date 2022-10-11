@@ -9,9 +9,12 @@ import SmokedButton from "../components/SmokedButton"
 // 臓器くん
 
 const Home: NextPage = () => {
+  const session = useIsLoggedIn()
+
   return (
     <Layout>
       <div>
+        {!session && <Text color='orange'>ログインしてください</Text>}
         <Stack className='mb-6'>
           <ProfileDetail />
         </Stack>
