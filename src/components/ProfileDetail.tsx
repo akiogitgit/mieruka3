@@ -4,11 +4,11 @@ import useStore from "../store"
 import { Smoked } from "../types/smoked"
 import { Profile } from "../types/user"
 import { supabase } from "../utils/supabase"
-import { Chart } from "./Chart"
 import { calcSavingAmount } from "./profile/savingMoney"
 import { calcSplitTime } from "./profile/splitSeconds"
 import { User } from "./profile/User"
 import { ZoukiKun } from "./profile/ZoukiKun"
+import { SmokedChart } from "./SmokedChart"
 
 async function getSmokedCreatedAt(userId: string) {
   const { data, error, status } = await supabase
@@ -127,7 +127,7 @@ export const ProfileDetail: FC = () => {
           </div>
         </Group>
       </Card>
-      {session && <Chart userName={userInfo?.name ?? "ゲスト"} />}
+      {session && <SmokedChart userName={userInfo?.name ?? "ゲスト"} />}
       {session && <ZoukiKun nonSmokingDuration={nonSmokingDuration} />}
     </>
   )
