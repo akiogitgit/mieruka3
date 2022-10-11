@@ -4,9 +4,9 @@ import Link from "next/link"
 import Image from "next/image"
 import { Burger, Button, Drawer } from "@mantine/core"
 import { supabase } from "../utils/supabase"
-import { useIsLoggedIn } from "../hooks/useIsLoggedIn"
 import { useRouter } from "next/router"
 import { showNotification } from "@mantine/notifications"
+import useStore from "../store"
 
 type Props = {
   children: ReactNode
@@ -23,12 +23,13 @@ const menus = [
 export const Layout: FC<Props> = ({ title = "禁煙ミエルカ", children }) => {
   const [opened, setOpened] = useState(false)
   const [menuAnimateFire, setMenuAnimateFire] = useState(false)
-  const session = useIsLoggedIn()
+  const session = useStore(s => s.session)
   const router = useRouter()
 
   // ログアウト
   const signOut = useCallback(() => {
     supabase.auth.signOut()
+    setOpened(false)
     showNotification({
       title: "ログアウトに成功しました",
       message: "",
