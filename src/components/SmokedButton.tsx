@@ -1,15 +1,14 @@
 import { Stack, Button, Modal } from "@mantine/core"
-import Image from "next/image"
 import React, { useCallback, useState } from "react"
 import { useIsLoggedIn } from "../hooks/useIsLoggedIn"
 import { supabase } from "../utils/supabase"
+import { showNotification } from "@mantine/notifications"
 
 const SmokedButton = () => {
   const session = useIsLoggedIn()
 
   // 喫煙ボタンが押された時の処理
   const [opened, setOpened] = useState(false)
-  const [isSmoked, setIsSmoked] = useState(false)
 
   const openSmokedModal = useCallback(() => {
     setOpened(true)
@@ -36,9 +35,13 @@ const SmokedButton = () => {
     if (error) {
       throw new Error(error.message)
     }
-    setIsSmoked(s => !s)
-    setTimeout(closeSmokedModal, 1000)
-    // closeSmokedModal()
+
+    closeSmokedModal()
+    showNotification({
+      title: "吸っちゃったね。",
+      message: "",
+      color: "red",
+    })
   }, [session, closeSmokedModal])
 
   return (
