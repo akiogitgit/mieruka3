@@ -3,7 +3,7 @@ import type { NextPage } from "next"
 import { Layout } from "../components/Layout"
 import { ProfileDetail } from "../components/profileDetail/ProfileDetail"
 import SmokedButton from "../components/SmokedButton"
-import { SmokedChart } from "../components/SmokedChart"
+import { SmokedChart } from "../components/chart/SmokedChart"
 import useStore from "../store"
 
 // メイン画面（継続日数、節約金額、応援メッセージ、リスクが下がった）
