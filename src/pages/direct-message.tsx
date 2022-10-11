@@ -33,17 +33,25 @@ const DirectMessage = () => {
       text: (v: string) => (v === "" ? "メッセージを入力してください" : null),
     },
   })
-
+  const [resCount, setResCount] = useState(0)
   const addMsg = useCallback(() => {
     // console.table(directMessages)
+
+    const resList = [
+      "どんな症状ですか？",
+      "診断の予約をしますか？",
+      "承知しました。",
+    ]
     setDirectMessages(v => [
       ...v,
       {
         user_name: "Doctor",
-        message: "我慢してください",
+        message: resList[resCount],
       },
     ])
-  }, [])
+    console.log(resCount)
+    setResCount(resCount + 1)
+  }, [resCount])
 
   const onSubmit = () => {
     setDirectMessages(v => [
@@ -60,7 +68,7 @@ const DirectMessage = () => {
 
   return (
     <Layout>
-      <div className='flex flex-col mt-4 gap-6'>
+      <div className='flex flex-col mt-4 mb-50 gap-6'>
         {directMessages?.map((directMessage, index) => (
           <div
             key={index}
