@@ -140,7 +140,9 @@ export const ProfileDetail: FC = () => {
           </div>
         </Group>
       </Card>
-      <ZoukiKun nonSmokingDuration={continuousNonSmokingDuration} />
+      {session && (
+        <ZoukiKun nonSmokingDuration={continuousNonSmokingDuration} />
+      )}
     </>
   )
 }
