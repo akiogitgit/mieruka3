@@ -7,7 +7,6 @@ import { useGetApi } from "../hooks/useGetApi"
 import { Center } from "@mantine/core"
 import HighchartsReact from "highcharts-react-official"
 import Highcharts from "highcharts"
-import { calcLifespan } from "./profile/lifespan"
 import { calcSavingAmount } from "./profile/savingMoney"
 import { useIsLoggedIn } from "../hooks/useIsLoggedIn"
 import { Smoked } from "../types/smoked"
@@ -37,9 +36,9 @@ function formedDateOfThisWeek() {
   const thisSunday = thisMonday + 6
 
   const startDate =
-    new Date(thisYear, thisMonth, thisMonday).getTime() - 15 * 60 * 60 * 1000
+    new Date(thisYear, thisMonth, thisMonday).getTime() + 9 * 60 * 60 * 1000
   const endDate =
-    new Date(thisYear, thisMonth, thisSunday).getTime() - 15 * 60 * 60 * 1000
+    new Date(thisYear, thisMonth, thisSunday).getTime() + 9 * 60 * 60 * 1000
 
   return { startDate, endDate }
 }
@@ -144,7 +143,7 @@ export const Chart: FC<Props> = ({ userName }) => {
       ).toLocaleDateString()
       console.log("smoking date", smokingDate)
       const smokingTimeStamp =
-        new Date(smokingDate).getTime() - 15 * 60 * 60 * 1000 // 15時間消す(なんかうまく時間取れない。。。)
+        new Date(smokingDate).getTime() + 9 * 60 * 60 * 1000 // 15時間消す(なんかうまく時間取れない。。。)
       if (saveSmokingTimestamp === smokingTimeStamp) {
         smokingCount = smokingCount + (smokingDetail?.num_tabaco ?? 0)
       } else {
@@ -165,6 +164,10 @@ export const Chart: FC<Props> = ({ userName }) => {
           data: smokingCountPerDay ?? [],
           shadow: true,
           color: "#2BAEF0",
+          name: "吸った本数",
+          tooltip: {
+            valueSuffix: "本",
+          },
         },
       ],
       xAxis: {
