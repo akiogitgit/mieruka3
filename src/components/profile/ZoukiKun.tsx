@@ -1,6 +1,7 @@
 import { Center, Group } from "@mantine/core"
 import Image from "next/image"
 import { FC, useEffect, useState } from "react"
+import { riskReductionMessage } from "./riskReductionMessage"
 
 type Props = {
   nonSmokingDuration: number
@@ -9,10 +10,8 @@ type Props = {
 export const ZoukiKun: FC<Props> = ({ nonSmokingDuration }) => {
   const [cheeringMessage, setCheeringMessage] = useState("")
   useEffect(() => {
-    if (nonSmokingDuration > 0.5) {
-      setCheeringMessage("aaaa")
-    }
-    setCheeringMessage("血中の酸素濃度が上昇してきたよ")
+    // setCheeringMessage("血中の酸素濃度が上昇してきたよ")
+    setCheeringMessage(riskReductionMessage(nonSmokingDuration))
     console.log("nonSmokingDuration", nonSmokingDuration)
   }, [nonSmokingDuration])
 
