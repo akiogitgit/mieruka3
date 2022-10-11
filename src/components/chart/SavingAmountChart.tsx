@@ -83,7 +83,7 @@ export const SavingAmountChart: FC<Props> = ({ userName }) => {
         if (saveSmokingTimestamp !== 0) {
           smokingCountPerDay.push([
             saveSmokingTimestamp,
-            spendAmountPerDay / index,
+            ~~((spendAmountPerDay * 3) / (index + 1)),
           ])
         }
         smokingCount = 0
