@@ -104,13 +104,7 @@ type Props = {
 export const Chart: FC<Props> = ({ userName }) => {
   const session = useStore(s => s.session)
   const chartComponent = useRef(null)
-  const [smokedPerDay, setSmokedPerDay] = useState<number[][]>()
-
   const [chartOptions, setChartOptions] = useState(options)
-
-  const [nonSmokingDuration, setNonSmokingDuration] = useState(0)
-  const [savingPrice, setSavingPrice] = useState(0)
-  const [lifespanStr, setLifespanStr] = useState("")
 
   // ログインしていたら、継続禁煙時間などをセット
   const setStatistics = useCallback(async () => {
@@ -185,7 +179,7 @@ export const Chart: FC<Props> = ({ userName }) => {
     }
     setChartOptions(newOptions)
     console.log("setoptions", options)
-  }, [session])
+  }, [session?.user?.id, userName])
 
   useEffect(() => {
     setStatistics()
