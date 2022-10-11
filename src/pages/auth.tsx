@@ -197,7 +197,7 @@ const Auth: NextPage = () => {
                     {...form.getInputProps("name")}
                   />
                   <NumberInput
-                    label=' タバコの一箱の値段'
+                    label=' タバコ一箱(アイコス)の値段'
                     description='普段吸っているタバコの金額を入力して下さい'
                     withAsterisk
                     min={0}

@@ -59,7 +59,7 @@ export const Layout: FC<Props> = ({ title = "禁煙ミエルカ", children }) =>
           name='description'
           content='禁煙をモチベーションを保ち、続けられるサービス'
         />
-        <link rel='icon' href='/favicon.ico' />
+        <link rel='icon' href='/mieruka.png' />
       </Head>
 
       <header className='bg-blue-500 shadow-lg w-full py-2 top-0 z-100'>
@@ -67,12 +67,12 @@ export const Layout: FC<Props> = ({ title = "禁煙ミエルカ", children }) =>
           <Link href='/'>
             <h1 className='cursor-pointer flex items-center'>
               <Image
-                src='/favicon.ico'
+                src='/mieruka.png'
                 height={50}
                 width={50}
                 alt=''
                 objectFit='contain'
-                className='transform scale-140'
+                className='transform'
               />
               <span className='font-mono text-white ml-3 text-23px sm:text-3xl'>
                 禁煙ミエルカ
