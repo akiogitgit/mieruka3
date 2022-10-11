@@ -21,7 +21,7 @@ const Home: NextPage = () => {
           <ProfileDetail />
         </Stack>
         <Stack>
-          <Center>
+          <Center mb={100}>
             <SmokedButton />
           </Center>
           <Chart />
