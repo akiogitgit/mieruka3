@@ -2,18 +2,19 @@ import { Center, Group } from "@mantine/core"
 import Image from "next/image"
 import { FC, useEffect, useState } from "react"
 import { riskReductionMessage } from "./riskReductionMessage"
+import { zokikunImage } from "./zoukikunImage"
 
 type Props = {
-  nonSmokingDuration: number
+  continuousNonSmokingDuration: number
 }
 
-export const ZoukiKun: FC<Props> = ({ nonSmokingDuration }) => {
+export const ZoukiKun: FC<Props> = ({ continuousNonSmokingDuration }) => {
   const [cheeringMessage, setCheeringMessage] = useState("")
   useEffect(() => {
     // setCheeringMessage("血中の酸素濃度が上昇してきたよ")
-    setCheeringMessage(riskReductionMessage(nonSmokingDuration))
-    console.log("nonSmokingDuration", nonSmokingDuration)
-  }, [nonSmokingDuration])
+    setCheeringMessage(riskReductionMessage(continuousNonSmokingDuration))
+    console.log("continuousNonSmokingDuration", continuousNonSmokingDuration)
+  }, [continuousNonSmokingDuration])
 
   return (
     <Center>
@@ -31,12 +32,11 @@ export const ZoukiKun: FC<Props> = ({ nonSmokingDuration }) => {
                 width={300}
                 height={300}
                 objectFit='contain'
-                src='/zouki/kanzo.png'
+                src={zokikunImage(continuousNonSmokingDuration)}
                 alt='zouki image'
               />
             </div>
           </div>
-          <div>臓器くんが死にそうです！禁煙してください！</div>
         </div>
         <div className='mb-5 balloon4'>
           <p>{cheeringMessage}</p>

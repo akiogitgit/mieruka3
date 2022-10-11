@@ -1,13 +1,15 @@
 // 禁煙継続日数を受け取り、その経過時間毎にリスクの低下を返す
 // 引数：1.2 -> 返り値："心臓の病気になる確率が下がりました"
 
-export const riskReductionMessage = (nonSmokingDuration: number): string => {
-  const minutes = nonSmokingDuration / 60
+export const riskReductionMessage = (
+  continuousNonSmokingDuration: number,
+): string => {
+  const minutes = continuousNonSmokingDuration / 60
   const hours = minutes / 60
   const day = hours / 24
   const year = day / 365
 
-  if (minutes < 20) {
+  if (minutes < 20 || !continuousNonSmokingDuration) {
     return "禁煙がんばれ！"
   }
   if (minutes > 20 && hours < 2) {
