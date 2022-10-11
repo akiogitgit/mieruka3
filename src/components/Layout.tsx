@@ -4,9 +4,9 @@ import Link from "next/link"
 import Image from "next/image"
 import { Burger, Button, Drawer } from "@mantine/core"
 import { supabase } from "../utils/supabase"
-import { useIsLoggedIn } from "../hooks/useIsLoggedIn"
 import { useRouter } from "next/router"
 import { showNotification } from "@mantine/notifications"
+import useStore from "../store"
 
 type Props = {
   children: ReactNode
@@ -23,12 +23,13 @@ const menus = [
 export const Layout: FC<Props> = ({ title = "禁煙ミエルカ", children }) => {
   const [opened, setOpened] = useState(false)
   const [menuAnimateFire, setMenuAnimateFire] = useState(false)
-  const session = useIsLoggedIn()
+  const session = useStore(s => s.session)
   const router = useRouter()
 
   // ログアウト
   const signOut = useCallback(() => {
     supabase.auth.signOut()
+    setOpened(false)
     showNotification({
       title: "ログアウトに成功しました",
       message: "",
@@ -58,7 +59,7 @@ export const Layout: FC<Props> = ({ title = "禁煙ミエルカ", children }) =>
           name='description'
           content='禁煙をモチベーションを保ち、続けられるサービス'
         />
-        <link rel='icon' href='/favicon.ico' />
+        <link rel='icon' href='/mieruka.png' />
       </Head>
 
       <header className='bg-blue-500 shadow-lg w-full py-2 top-0 z-100'>
@@ -66,14 +67,16 @@ export const Layout: FC<Props> = ({ title = "禁煙ミエルカ", children }) =>
           <Link href='/'>
             <h1 className='cursor-pointer flex items-center'>
               <Image
-                src='/favicon.ico'
+                src='/mieruka.png'
                 height={50}
                 width={50}
                 alt=''
                 objectFit='contain'
-                className='transform scale-140'
+                className='transform'
               />
-              <span className='font-mono text-white ml-3'>禁煙ミエルカ</span>
+              <span className='font-mono text-white ml-3 text-23px sm:text-3xl'>
+                禁煙ミエルカ
+              </span>
             </h1>
           </Link>
 

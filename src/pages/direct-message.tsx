@@ -7,55 +7,18 @@ import { User } from "../components/profile/User"
 import {
   Affix,
   Button,
-  Center,
   Indicator,
   Avatar,
   Paper,
   Textarea,
-  Stack,
 } from "@mantine/core"
 import { useForm } from "@mantine/form"
-import { supabase } from "../utils/supabase"
-import { Profile } from "../types/user"
-import { Smoked } from "../types/smoked"
-import { useIsLoggedIn } from "../hooks/useIsLoggedIn"
+import { NextPage } from "next"
+import useStore from "../store"
 
-// setMessages([...messages, newMssege])
-
-// プロフィールからユーザー名を取得↓
-async function getProfile(userId: string) {
-  const { data, error, status } = await supabase
-    .from<Profile>("profiles")
-    .select("*")
-    .eq("user_id", userId)
-    .order("created_at", { ascending: false })
-    .single()
-
-  if (error && status !== 406) {
-    // dataがなかった時はthrow errorしない
-    throw new Error(error.message)
-  }
-  return data
-}
-
-const DirectMessage = () => {
-  const session = useIsLoggedIn()
-  const [userName, setUserName] = useState<string | null>(null)
-  const setRecordings = useCallback(async () => {
-    const userId = session?.user?.id
-    console.log("userId", userId)
-    if (userId === undefined || userId === null) {
-      return
-    }
-    const profileData = await getProfile(userId)
-    console.log("profile data", profileData)
-
-    setUserName(profileData?.name ?? "ゲスト")
-  }, [session])
-
-  useEffect(() => {
-    setRecordings()
-  }, [setRecordings])
+const DirectMessage: NextPage = () => {
+  const [resCount, setResCount] = useState(0)
+  const userInfo = useStore(s => s.userInfo)
 
   // formの入力に関する記述
   const form = useForm<{ text: string }>({
@@ -72,10 +35,8 @@ const DirectMessage = () => {
       message: "何かあったらメッセージをください",
     },
   ])
-  const [resCount, setResCount] = useState(0)
-  const addMsg = useCallback(() => {
-    // console.table(directMessages)
 
+  const addMsg = useCallback(() => {
     const resList = [
       "どんな症状ですか？",
       "診断の予約をしますか？",
@@ -88,31 +49,33 @@ const DirectMessage = () => {
         message: resList[resCount],
       },
     ])
+
     console.log(resCount)
     setResCount(resCount + 1)
   }, [resCount])
 
-  const onSubmit = () => {
+  const onSubmit = useCallback(() => {
     setDirectMessages(v => [
       ...v,
       {
-        user_name: userName ?? "ゲスト",
+        user_name: userInfo?.name ?? "ゲスト",
         message: form.values.text,
       },
     ])
+
     form.reset()
     console.log(directMessages)
     setTimeout(addMsg, 3000)
-  }
+  }, [addMsg, directMessages, form, userInfo?.name])
+
   return (
     <Layout>
       <div className='flex flex-col mt-4 mb-50 gap-6'>
         {directMessages?.map((directMessage, index) => (
           <div
             key={index}
-            // className='flex gap-3 items-start justify-end'
             className={`${
-              directMessage.user_name === userName
+              directMessage.user_name !== "Doctor"
                 ? "justify-content-end flex-row-reverse "
                 : ""
             } flex gap-3 items-start`}
@@ -136,7 +99,7 @@ const DirectMessage = () => {
                 />
               </Indicator>
             ) : (
-              <User userName='' userId={session?.user?.id ?? ""} />
+              <User userName='' userId={userInfo?.user_id ?? ""} />
             )}
 
             <div>
@@ -159,7 +122,7 @@ const DirectMessage = () => {
 
         <Affix
           position={{ bottom: 0 }}
-          className='flex w-[100%] items-center justify-center '
+          className='flex w-[100%] z-10 items-center justify-center'
         >
           <div className='bg-light-50 w-[calc(100%-1rem)]'>
             <form onSubmit={form.onSubmit(onSubmit)}>

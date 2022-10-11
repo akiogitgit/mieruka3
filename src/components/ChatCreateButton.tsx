@@ -1,17 +1,17 @@
 import { Button, LoadingOverlay, Modal, Stack, Textarea } from "@mantine/core"
 import { useForm } from "@mantine/form"
 import { FC, useCallback, useEffect, useState } from "react"
-import { useGetApi, useSelectEq } from "../hooks/useGetApi"
-import { useIsLoggedIn } from "../hooks/useIsLoggedIn"
 import { ChatFormParams } from "../types/chat"
 import { supabase } from "../utils/supabase"
 import { showNotification } from "@mantine/notifications"
+import useStore from "../store"
 
 // ログインしていないなら押せなくする
 export const ChatCreateButton: FC = () => {
   const [opened, setOpened] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
-  const session = useIsLoggedIn()
+  const session = useStore(s => s.session)
+  const userInfo = useStore(s => s.userInfo)
 
   const form = useForm<ChatFormParams>({
     initialValues: {
@@ -24,24 +24,17 @@ export const ChatCreateButton: FC = () => {
     },
   })
 
-  const { data: userName } = useSelectEq<{ name: string }>("profiles", {
-    select: "name",
-    column: "user_id",
-    value: session?.user?.id,
-  })
-  console.log("user_name22", userName)
-
   // session, userNameが変わると、再計算する
   const getUserName = useCallback(async () => {
-    if (!session || !userName) {
+    if (!session || !userInfo) {
       return
     }
     form.setValues({
       user_id: session.user?.id,
-      user_name: userName[0].name,
+      user_name: userInfo.name,
       message: "",
     })
-  }, [session, userName])
+  }, [form, session, userInfo])
 
   // 初回とgetUserNameの結果が変わる度に実行
   useEffect(() => {

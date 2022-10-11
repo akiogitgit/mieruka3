@@ -5,16 +5,16 @@ import { riskReductionMessage } from "./riskReductionMessage"
 import { zokikunImage } from "./zoukikunImage"
 
 type Props = {
-  continuousNonSmokingDuration: number
+  nonSmokingDuration: number
 }
 
-export const ZoukiKun: FC<Props> = ({ continuousNonSmokingDuration }) => {
+export const ZoukiKun: FC<Props> = ({ nonSmokingDuration }) => {
   const [cheeringMessage, setCheeringMessage] = useState("")
   useEffect(() => {
     // setCheeringMessage("血中の酸素濃度が上昇してきたよ")
-    setCheeringMessage(riskReductionMessage(continuousNonSmokingDuration))
-    console.log("continuousNonSmokingDuration", continuousNonSmokingDuration)
-  }, [continuousNonSmokingDuration])
+    setCheeringMessage(riskReductionMessage(nonSmokingDuration))
+    console.log("nonSmokingDuration", nonSmokingDuration)
+  }, [nonSmokingDuration])
 
   return (
     <Center>
@@ -32,7 +32,7 @@ export const ZoukiKun: FC<Props> = ({ continuousNonSmokingDuration }) => {
                 width={300}
                 height={300}
                 objectFit='contain'
-                src={zokikunImage(continuousNonSmokingDuration)}
+                src={zokikunImage(nonSmokingDuration)}
                 alt='zouki image'
               />
             </div>
