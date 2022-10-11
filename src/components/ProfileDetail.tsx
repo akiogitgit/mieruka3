@@ -4,6 +4,7 @@ import { useIsLoggedIn } from "../hooks/useIsLoggedIn"
 import { Smoked } from "../types/smoked"
 import { Profile } from "../types/user"
 import { supabase } from "../utils/supabase"
+import { Chart } from "./Chart"
 import { calcSavingAmount } from "./profile/savingMoney"
 import { calcSplitTime } from "./profile/splitSeconds"
 import { User } from "./profile/User"
@@ -140,6 +141,7 @@ export const ProfileDetail: FC = () => {
           </div>
         </Group>
       </Card>
+　　　　　　　　　　　　{session && <Chart userName={userName} />}
       {session && (
         <ZoukiKun nonSmokingDuration={continuousNonSmokingDuration} />
       )}

@@ -8,3 +8,12 @@ export const changeDateFormat = (beforeDate: string) => {
   }).format(date)
   return formated
 }
+
+export const returnYearMonthDay = (date: Date): string => {
+  const formated = new Intl.DateTimeFormat("ja-JP", {
+    year: "numeric",
+    month: "numeric",
+    day: "numeric",
+  }).format(date)
+  return formated
+}
