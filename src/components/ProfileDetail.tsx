@@ -143,7 +143,7 @@ export const ProfileDetail: FC = () => {
       </Card>
       {session && <Chart userName={userName} />}
       {session && (
-        <ZoukiKun nonSmokingDuration={continuousNonSmokingDuration} />
+        <ZoukiKun continuousNonSmokingDuration={continuousNonSmokingDuration} />
       )}
     </>
   )
