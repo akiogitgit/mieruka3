@@ -82,6 +82,7 @@ export const ProfileDetail: FC = () => {
       numTabacoPerDay,
       smokingCountAll,
     )
+    console.log({ smokingCountAll })
     setSavingAmount(savingAmount)
 
     // 伸びた寿命

@@ -83,6 +83,7 @@ export const SmokedChart: FC<Props> = ({ userName }) => {
     }
 
     smokingCountPerDay.push([saveSmokingTimestamp, smokingCount])
+    // console.log("smokin2: ", smokingCountPerDay)
     const thisWeek = formedDateOfThisWeek()
     const newOptions = {
       ...options,

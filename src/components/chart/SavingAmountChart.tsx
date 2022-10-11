@@ -6,6 +6,7 @@ import { Smoked } from "../../types/smoked"
 import { supabase } from "../../utils/supabase"
 import useStore from "../../store"
 import { options } from "./options"
+import { calcSavingAmount } from "../profileDetail/savingAmount"
 
 async function getSmokedCreatedAt(userId: string) {
   const { data, error, status } = await supabase
@@ -42,8 +43,9 @@ type Props = {
   userName: string | null
 }
 // カレンダー（吸った日、禁断症状出た日）
-export const SmokedChart: FC<Props> = ({ userName }) => {
+export const SavingAmountChart: FC<Props> = ({ userName }) => {
   const session = useStore(s => s.session)
+  const userInfo = useStore(s => s.userInfo)
   const chartComponent = useRef(null)
   const [chartOptions, setChartOptions] = useState(options)
 
@@ -61,7 +63,11 @@ export const SmokedChart: FC<Props> = ({ userName }) => {
     let smokingCount = 0
     let saveSmokingTimestamp = 0
 
-    for (const smokingDetail of smokedData) {
+    const tabacoPrice = userInfo?.tabaco_price ?? 0
+    const numTabacoPerDay = userInfo?.num_tabaco_per_day ?? 0
+    const spendAmountPerDay = (tabacoPrice / 19) * numTabacoPerDay
+
+    smokedData.forEach((smokingDetail, index) => {
       const smokingDate = new Date(
         smokingDetail.created_at,
       ).toLocaleDateString()
@@ -75,14 +81,18 @@ export const SmokedChart: FC<Props> = ({ userName }) => {
       } else {
         smokingCount = smokingCount + (smokingDetail?.num_tabaco ?? 0)
         if (saveSmokingTimestamp !== 0) {
-          smokingCountPerDay.push([saveSmokingTimestamp, smokingCount])
+          smokingCountPerDay.push([
+            saveSmokingTimestamp,
+            (index + 1) * spendAmountPerDay,
+          ])
         }
         smokingCount = 0
         saveSmokingTimestamp = smokingTimeStamp
       }
-    }
+    })
 
     smokingCountPerDay.push([saveSmokingTimestamp, smokingCount])
+    // console.log("smokin2: ", smokingCountPerDay)
     const thisWeek = formedDateOfThisWeek()
     const newOptions = {
       ...options,
@@ -91,9 +101,9 @@ export const SmokedChart: FC<Props> = ({ userName }) => {
           data: smokingCountPerDay ?? [],
           shadow: true,
           color: "#2BAEF0",
-          name: "吸った本数",
+          name: "節約できた金額",
           tooltip: {
-            valueSuffix: "本",
+            valueSuffix: "円",
           },
         },
       ],
@@ -113,7 +123,7 @@ export const SmokedChart: FC<Props> = ({ userName }) => {
         max: thisWeek.endDate,
       },
       title: {
-        text: `${userName ?? "ゲスト"}さんのタバコを吸った本数`,
+        text: `${userName ?? "ゲスト"}さんの節約できた累計金額`,
       },
     }
     setChartOptions(newOptions)
