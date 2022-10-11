@@ -13,13 +13,16 @@ import { Signage } from "./Signage"
 
 export const SignageList: FC = () => {
   return (
-    <ScrollArea scrollHideDelay={300} className='h-130 mt-3'>
-      <Stack>
-        <Signage hospitalNumber={0} />
-        <Signage hospitalNumber={1} />
-        <Signage hospitalNumber={2} />
-        <Signage hospitalNumber={3} />
-      </Stack>
-    </ScrollArea>
+    <div className='mt-10'>
+      <Text>広告</Text>
+      <ScrollArea scrollHideDelay={300} className='h-130 mt-3'>
+        <Stack>
+          <Signage hospitalNumber={0} />
+          <Signage hospitalNumber={1} />
+          <Signage hospitalNumber={2} />
+          <Signage hospitalNumber={3} />
+        </Stack>
+      </ScrollArea>
+    </div>
   )
 }
