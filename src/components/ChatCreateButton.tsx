@@ -10,6 +10,7 @@ import useStore from "../store"
 export const ChatCreateButton: FC = () => {
   const [opened, setOpened] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const session = useStore(s => s.session)
   const userInfo = useStore(s => s.userInfo)
 
   const form = useForm<{ message: string }>({
@@ -55,7 +56,7 @@ export const ChatCreateButton: FC = () => {
     }, 300)
   }, [form, createChat])
 
-  if (!userInfo) {
+  if (!session) {
     return <></>
   }
 
