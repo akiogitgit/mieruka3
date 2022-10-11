@@ -1,5 +1,5 @@
-import React, { useCallback, useRef } from "react"
-import { Layout } from "../components/Layout"
+import React, { FC, useCallback, useRef } from "react"
+import { Layout } from "./Layout"
 import { useEffect, useState } from "react"
 import { Calendar } from "@mantine/dates"
 import { NextPage } from "next"
@@ -7,8 +7,8 @@ import { useGetApi } from "../hooks/useGetApi"
 import { Center } from "@mantine/core"
 import HighchartsReact from "highcharts-react-official"
 import Highcharts from "highcharts"
-import { calcLifespan } from "../components/profile/lifespan"
-import { calcSavingAmount } from "../components/profile/savingMoney"
+import { calcLifespan } from "./profile/lifespan"
+import { calcSavingAmount } from "./profile/savingMoney"
 import { useIsLoggedIn } from "../hooks/useIsLoggedIn"
 import { Smoked } from "../types/smoked"
 import { supabase } from "../utils/supabase"
@@ -27,6 +27,23 @@ async function getSmokedCreatedAt(userId: string) {
   return data
 }
 
+function formedDateOfThisWeek() {
+  const today = new Date()
+  const thisYear = today.getFullYear()
+  const thisMonth = today.getMonth()
+  const date = today.getDate()
+  const dayNum = today.getDay()
+  const thisMonday = date - dayNum + 1
+  const thisSunday = thisMonday + 6
+
+  const startDate =
+    new Date(thisYear, thisMonth, thisMonday).getTime() - 15 * 60 * 60 * 1000
+  const endDate =
+    new Date(thisYear, thisMonth, thisSunday).getTime() - 15 * 60 * 60 * 1000
+
+  return { startDate, endDate }
+}
+
 const options = {
   series: [
     {
@@ -36,19 +53,23 @@ const options = {
     },
   ],
   title: {
-    text: "日毎の統計",
+    text: "XXXさんのタバコを吸った本数",
   },
   subtitle: {
-    text: "Chart with datetime axis",
+    text: "",
   },
   xAxis: {
     title: {
       text: "日付",
     },
     type: "datetime",
-    // minPadding: 0.1,
-    // maxPadding: 0,
+    minPadding: 0.1,
+    maxPadding: 0,
     // showLastLabel: true,
+    // tickInterval: 24 * 3600,
+    labels: {
+      format: "{value:%Y-%m-%d}",
+    },
   },
   yAxis: {
     title: {
@@ -85,7 +106,7 @@ const options = {
 }
 
 // カレンダー（吸った日、禁断症状出た日）
-const CalendarGraph: NextPage = () => {
+export const Chart: FC = () => {
   const session = useIsLoggedIn()
   const chartComponent = useRef(null)
   const [smokedPerDay, setSmokedPerDay] = useState<number[][]>()
@@ -116,8 +137,13 @@ const CalendarGraph: NextPage = () => {
     let smokingCount = 0
     let saveSmokingTimestamp = 0
     for (const smokingDetail of smokedData) {
-      const smokingTimestamp = new Date(smokingDetail.created_at).getTime()
-      if (saveSmokingTimestamp === smokingTimestamp) {
+      const smokingDate = new Date(
+        smokingDetail.created_at,
+      ).toLocaleDateString()
+      console.log("smoking date", smokingDate)
+      const smokingTimeStamp =
+        new Date(smokingDate).getTime() - 15 * 60 * 60 * 1000 // 15時間消す(なんかうまく時間取れない。。。)
+      if (saveSmokingTimestamp === smokingTimeStamp) {
         smokingCount = smokingCount + (smokingDetail?.num_tabaco ?? 0)
       } else {
         smokingCount = smokingCount + (smokingDetail?.num_tabaco ?? 0)
@@ -125,10 +151,11 @@ const CalendarGraph: NextPage = () => {
           smokingCountPerDay.push([saveSmokingTimestamp, smokingCount])
         }
         smokingCount = 0
-        saveSmokingTimestamp = smokingTimestamp
+        saveSmokingTimestamp = smokingTimeStamp
       }
     }
     smokingCountPerDay.push([saveSmokingTimestamp, smokingCount])
+    const thisWeek = formedDateOfThisWeek()
     const newOptions = {
       ...options,
       series: [
@@ -138,6 +165,21 @@ const CalendarGraph: NextPage = () => {
           color: "#2BAEF0",
         },
       ],
+      xAxis: {
+        title: {
+          text: "日付",
+        },
+        type: "datetime",
+        minPadding: 0.1,
+        maxPadding: 0,
+        // showLastLabel: true,
+        // tickInterval: 24 * 3600,
+        labels: {
+          format: "{value:%Y-%m-%d}",
+        },
+        min: thisWeek.startDate,
+        max: thisWeek.endDate,
+      },
     }
     setChartOptions(newOptions)
     console.log("setoptions", options)
@@ -157,5 +199,3 @@ const CalendarGraph: NextPage = () => {
     </div>
   )
 }
-
-export default CalendarGraph
