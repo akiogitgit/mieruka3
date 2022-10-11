@@ -3,6 +3,7 @@ import React, { useCallback, useState } from "react"
 import { supabase } from "../utils/supabase"
 import { showNotification } from "@mantine/notifications"
 import useStore from "../store"
+import Link from "next/link"
 
 const SmokedButton = () => {
   const session = useStore(s => s.session)
@@ -88,16 +89,24 @@ const SmokedButton = () => {
         <Modal
           opened={openedHelpModal}
           onClose={() => setOpenedHelpModal(v => !v)}
-          title='禁断症状の対処法'
           centered
         >
-          <Stack spacing='sm' ml='sm' my='xl'>
-            <p>① 甘いものを食べてみよう！</p>
-            <p>② 運動してみよう！</p>
-            <p>③ ガムたばこで我慢しよう！</p>
-          </Stack>
-          <div className='flex mt-5 justify-end'>
-            <Button onClick={onClickHelpButton}>みんなに助けを求める</Button>
+          <div className='ml-4'>
+            <p className='font-bold text-2xl'>がんばれ！！負けるな！！</p>
+            <p className='mt-30px'>禁断症状の対処法</p>
+            <Stack spacing='sm' my='md' ml='sm'>
+              <p>① 甘いものを食べてみよう！</p>
+              <p>② 運動してみよう！</p>
+              <p>③ ガムたばこで我慢しよう！</p>
+            </Stack>
+
+            <p className='mt-10'>現在24人がたばこを我慢しています</p>
+            <div className='flex mt-5 justify-between'>
+              <Link href='/direct-message'>
+                <Button>お医者さんにDMする</Button>
+              </Link>
+              <Button onClick={onClickHelpButton}>みんなに助けを求める</Button>
+            </div>
           </div>
         </Modal>
         <Modal
