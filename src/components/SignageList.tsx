@@ -14,7 +14,7 @@ import { Signage } from "./Signage"
 export const SignageList: FC = () => {
   return (
     <div className='mt-10'>
-      <Text>広告</Text>
+      <Text size={20}>人気の病院とあなたへのおすすめ</Text>
       <ScrollArea scrollHideDelay={300} className='h-130 mt-3'>
         <Stack>
           <Signage hospitalNumber={0} />
