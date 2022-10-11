@@ -20,12 +20,9 @@ const Home: NextPage = () => {
         <Stack className='mb-6'>
           <ProfileDetail />
         </Stack>
-        <Stack>
-          <Center mb={100}>
-            <SmokedButton />
-          </Center>
-          <Chart />
-        </Stack>
+        <Center mb={100}>
+          <SmokedButton />
+        </Center>
       </div>
     </Layout>
   )

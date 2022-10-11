@@ -73,7 +73,7 @@ const options = {
   },
   yAxis: {
     title: {
-      text: "吸った本数",
+      text: "吸った本数 (本)",
     },
     opposite: true,
     offset: 0,
@@ -104,9 +104,11 @@ const options = {
     enabled: false,
   },
 }
-
+type Props = {
+  userName: string | null
+}
 // カレンダー（吸った日、禁断症状出た日）
-export const Chart: FC = () => {
+export const Chart: FC<Props> = ({ userName }) => {
   const session = useIsLoggedIn()
   const chartComponent = useRef(null)
   const [smokedPerDay, setSmokedPerDay] = useState<number[][]>()
@@ -179,6 +181,9 @@ export const Chart: FC = () => {
         },
         min: thisWeek.startDate,
         max: thisWeek.endDate,
+      },
+      title: {
+        text: `${userName ?? "ゲスト"}さんのタバコを吸った本数`,
       },
     }
     setChartOptions(newOptions)
