@@ -31,11 +31,10 @@ import SmokedButton from "../components/SmokedButton"
 const Home: NextPage = () => {
   const session = useIsLoggedIn()
 
-  console.log("sesion", session)
-
   return (
     <Layout>
       <div>
+        {!session && <Text color='orange'>ログインしてください</Text>}
         <Stack className='mb-6'>
           <ProfileDetail />
         </Stack>
