@@ -1,11 +1,11 @@
 import { Stack, Button, Modal } from "@mantine/core"
 import React, { useCallback, useState } from "react"
-import { useIsLoggedIn } from "../hooks/useIsLoggedIn"
 import { supabase } from "../utils/supabase"
 import { showNotification } from "@mantine/notifications"
+import useStore from "../store"
 
 const SmokedButton = () => {
-  const session = useIsLoggedIn()
+  const session = useStore(s => s.session)
 
   // 喫煙ボタンが押された時の処理
   const [opened, setOpened] = useState(false)

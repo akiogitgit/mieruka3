@@ -2,16 +2,16 @@ import { Button, LoadingOverlay, Modal, Stack, Textarea } from "@mantine/core"
 import { useForm } from "@mantine/form"
 import { FC, useCallback, useEffect, useState } from "react"
 import { useGetApi, useSelectEq } from "../hooks/useGetApi"
-import { useIsLoggedIn } from "../hooks/useIsLoggedIn"
 import { ChatFormParams } from "../types/chat"
 import { supabase } from "../utils/supabase"
 import { showNotification } from "@mantine/notifications"
+import useStore from "../store"
 
 // ログインしていないなら押せなくする
 export const ChatCreateButton: FC = () => {
   const [opened, setOpened] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
-  const session = useIsLoggedIn()
+  const session = useStore(s => s.session)
 
   const form = useForm<ChatFormParams>({
     initialValues: {

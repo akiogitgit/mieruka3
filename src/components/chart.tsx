@@ -1,16 +1,10 @@
 import React, { FC, useCallback, useRef } from "react"
-import { Layout } from "./Layout"
 import { useEffect, useState } from "react"
-import { Calendar } from "@mantine/dates"
-import { NextPage } from "next"
-import { useGetApi } from "../hooks/useGetApi"
-import { Center } from "@mantine/core"
 import HighchartsReact from "highcharts-react-official"
 import Highcharts from "highcharts"
-import { calcSavingAmount } from "./profile/savingMoney"
-import { useIsLoggedIn } from "../hooks/useIsLoggedIn"
 import { Smoked } from "../types/smoked"
 import { supabase } from "../utils/supabase"
+import useStore from "../store"
 
 async function getSmokedCreatedAt(userId: string) {
   const { data, error, status } = await supabase
@@ -108,7 +102,7 @@ type Props = {
 }
 // カレンダー（吸った日、禁断症状出た日）
 export const Chart: FC<Props> = ({ userName }) => {
-  const session = useIsLoggedIn()
+  const session = useStore(s => s.session)
   const chartComponent = useRef(null)
   const [smokedPerDay, setSmokedPerDay] = useState<number[][]>()
 

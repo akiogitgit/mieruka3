@@ -1,7 +1,5 @@
-import { Avatar, Card, Center, Group, Indicator, Text } from "@mantine/core"
-import Image from "next/image"
-import { FC, useCallback, useEffect, useState } from "react"
-import chat from "../../pages/chat"
+import { Avatar, Indicator, Text } from "@mantine/core"
+import { FC, useCallback } from "react"
 
 type Props = {
   userId: string
