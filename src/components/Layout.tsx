@@ -74,7 +74,9 @@ export const Layout: FC<Props> = ({ title = "禁煙ミエルカ", children }) =>
                 objectFit='contain'
                 className='transform scale-140'
               />
-              <span className='font-mono text-white ml-3'>禁煙ミエルカ</span>
+              <span className='font-mono text-white ml-3 text-23px sm:text-3xl'>
+                禁煙ミエルカ
+              </span>
             </h1>
           </Link>
 
