@@ -5,16 +5,15 @@ import { Calendar } from "@mantine/dates"
 import { NextPage } from "next"
 import { useGetApi, useSelectEq } from "../hooks/useGetApi"
 import { Center, Indicator } from "@mantine/core"
-import { useIsLoggedIn } from "../hooks/useIsLoggedIn"
 import "dayjs/locale/ja"
 import { useMediaQuery } from "@mantine/hooks"
 import { returnYearMonthDay } from "../utils/changeDateFormat"
-import { stringify } from "querystring"
-import { Profile } from "../types/user"
+
+import useStore from "../store"
 
 // カレンダー（吸った日、禁断症状出た日）
 const CalendarGraph: NextPage = () => {
-  const session = useIsLoggedIn()
+  const session = useStore(s => s.session)
 
   const [value, setValue] = useState<Date[]>()
   const [smokedData, setSmokedData] = useState<Date[]>()

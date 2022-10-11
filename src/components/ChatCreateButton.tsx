@@ -1,22 +1,20 @@
 import { Button, LoadingOverlay, Modal, Stack, Textarea } from "@mantine/core"
 import { useForm } from "@mantine/form"
 import { FC, useCallback, useEffect, useState } from "react"
-import { useGetApi, useSelectEq } from "../hooks/useGetApi"
-import { useIsLoggedIn } from "../hooks/useIsLoggedIn"
 import { ChatFormParams } from "../types/chat"
 import { supabase } from "../utils/supabase"
 import { showNotification } from "@mantine/notifications"
+import useStore from "../store"
 
 // ログインしていないなら押せなくする
 export const ChatCreateButton: FC = () => {
   const [opened, setOpened] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
-  const session = useIsLoggedIn()
+  const session = useStore(s => s.session)
+  const userInfo = useStore(s => s.userInfo)
 
-  const form = useForm<ChatFormParams>({
+  const form = useForm<{ message: string }>({
     initialValues: {
-      user_id: "",
-      user_name: "",
       message: "",
     },
     validate: {
@@ -24,40 +22,23 @@ export const ChatCreateButton: FC = () => {
     },
   })
 
-  const { data: userName } = useSelectEq<{ name: string }>("profiles", {
-    select: "name",
-    column: "user_id",
-    value: session?.user?.id,
-  })
-  console.log("user_name22", userName)
-
-  // session, userNameが変わると、再計算する
-  const getUserName = useCallback(async () => {
-    if (!session || !userName) {
-      return
-    }
-    form.setValues({
-      user_id: session.user?.id,
-      user_name: userName[0].name,
-      message: "",
-    })
-  }, [session, userName])
-
-  // 初回とgetUserNameの結果が変わる度に実行
-  useEffect(() => {
-    getUserName()
-  }, [getUserName])
-
   const createChat = useCallback(async () => {
-    const { error } = await supabase.from("chats").insert(form.values, {
-      returning: "minimal", //返り値を無くす
-    })
+    const { error } = await supabase.from("chats").insert(
+      {
+        user_id: userInfo?.user_id,
+        user_name: userInfo?.name,
+        message: form.values.message,
+      },
+      {
+        returning: "minimal", //返り値を無くす
+      },
+    )
 
     if (error) {
       throw new Error(error.message)
     }
     console.log("投稿に成功しました", form.values)
-  }, [form.values])
+  }, [form.values, userInfo?.name, userInfo?.user_id])
 
   const onSubmit = useCallback(async () => {
     console.log(form.values)
