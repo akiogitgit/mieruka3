@@ -18,30 +18,20 @@ export const ZoukiKun: FC<Props> = ({ nonSmokingDuration }) => {
 
   return (
     <Center>
-      <Group spacing='xs'>
-        <div>
-          <div
-            style={{
-              width: 240,
-              marginLeft: "auto",
-              marginRight: "auto",
-            }}
-          >
-            <div>
-              <Image
-                width={300}
-                height={300}
-                objectFit='contain'
-                src={zokikunImage(nonSmokingDuration)}
-                alt='zouki image'
-              />
-            </div>
+      <div className='flex flex-col-reverse gap-3 items-center sm:flex-row'>
+        <div className='w-240px'>
+          <div>
+            <Image
+              width={300}
+              height={300}
+              objectFit='contain'
+              src={zokikunImage(nonSmokingDuration)}
+              alt='zouki image'
+            />
           </div>
         </div>
-        <div className='mb-5 balloon4'>
-          <p>{cheeringMessage}</p>
-        </div>
-      </Group>
+        <div className='mb-5 balloon4'>{cheeringMessage}</div>
+      </div>
     </Center>
   )
 }

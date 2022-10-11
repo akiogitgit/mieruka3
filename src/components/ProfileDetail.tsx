@@ -97,7 +97,7 @@ export const ProfileDetail: FC = () => {
       `${lifespan.day}日${lifespan.hour}時間${lifespan.minute}分${lifespan.second}秒`,
     )
     // ユーザ名取得
-  }, [session])
+  }, [session?.user?.id, userInfo])
 
   useEffect(() => {
     setRecordings()
@@ -127,7 +127,6 @@ export const ProfileDetail: FC = () => {
           </div>
         </Group>
       </Card>
-      {session && <SmokedChart userName={userInfo?.name ?? "ゲスト"} />}
       {session && <ZoukiKun nonSmokingDuration={nonSmokingDuration} />}
     </>
   )
