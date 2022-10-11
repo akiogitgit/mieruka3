@@ -28,10 +28,10 @@ const Home: NextPage = () => {
             <div className='mt-6'>
               <SmokedChart userName={userInfo?.name ?? "ゲスト"} />
             </div>
+            <SignageList />
           </div>
         )}
       </div>
-      <SignageList />
     </Layout>
   )
 }
