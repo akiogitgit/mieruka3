@@ -6,6 +6,7 @@ import SmokedButton from "../components/SmokedButton"
 import { SmokedChart } from "../components/chart/SmokedChart"
 import useStore from "../store"
 import { SavingAmountChart } from "../components/chart/SavingAmountChart"
+import { LifespanChart } from "../components/chart/LifespanChart"
 
 // メイン画面（継続日数、節約金額、応援メッセージ、リスクが下がった）
 // 肺の背景が少し明るくするとか
@@ -27,6 +28,7 @@ const Home: NextPage = () => {
             <SmokedButton />
             <div className='mt-6'>
               <SavingAmountChart userName={userInfo?.name ?? "ゲスト"} />
+              <LifespanChart userName={userInfo?.name ?? "ゲスト"} />
               <SmokedChart userName={userInfo?.name ?? "ゲスト"} />
             </div>
           </div>

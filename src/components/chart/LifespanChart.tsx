@@ -43,7 +43,7 @@ type Props = {
   userName: string | null
 }
 // カレンダー（吸った日、禁断症状出た日）
-export const SavingAmountChart: FC<Props> = ({ userName }) => {
+export const LifespanChart: FC<Props> = ({ userName }) => {
   const session = useStore(s => s.session)
   const userInfo = useStore(s => s.userInfo)
   const chartComponent = useRef(null)
@@ -63,9 +63,8 @@ export const SavingAmountChart: FC<Props> = ({ userName }) => {
     let smokingCount = 0
     let saveSmokingTimestamp = 0
 
-    const tabacoPrice = userInfo?.tabaco_price ?? 0
     const numTabacoPerDay = userInfo?.num_tabaco_per_day ?? 0
-    const spendAmountPerDay = (tabacoPrice / 19) * numTabacoPerDay
+    const decreaseLifespanPerDay = numTabacoPerDay * 5.5 // 一日当たり減る寿命（分）
 
     smokedData.forEach((smokingDetail, index) => {
       const smokingDate = new Date(
@@ -83,7 +82,7 @@ export const SavingAmountChart: FC<Props> = ({ userName }) => {
         if (saveSmokingTimestamp !== 0) {
           smokingCountPerDay.push([
             saveSmokingTimestamp,
-            spendAmountPerDay / index,
+            (decreaseLifespanPerDay * 3) / (index + 1),
           ])
         }
         smokingCount = 0
@@ -101,9 +100,9 @@ export const SavingAmountChart: FC<Props> = ({ userName }) => {
           data: smokingCountPerDay ?? [],
           shadow: true,
           color: "#2BAEF0",
-          name: "節約できた金額",
+          name: "伸びた寿命",
           tooltip: {
-            valueSuffix: "円",
+            valueSuffix: "分",
           },
         },
       ],
@@ -123,17 +122,12 @@ export const SavingAmountChart: FC<Props> = ({ userName }) => {
         max: thisWeek.endDate,
       },
       title: {
-        text: `${userName ?? "ゲスト"}さんの節約できた金額`,
+        text: `${userName ?? "ゲスト"}さんの伸びた寿命`,
       },
     }
     setChartOptions(newOptions)
     console.log("setoptions", options)
-  }, [
-    session?.user?.id,
-    userInfo?.num_tabaco_per_day,
-    userInfo?.tabaco_price,
-    userName,
-  ])
+  }, [session?.user?.id, userInfo?.num_tabaco_per_day, userName])
 
   useEffect(() => {
     setStatistics()
