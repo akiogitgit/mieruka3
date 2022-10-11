@@ -1,7 +1,7 @@
 import { Center, Stack, Text } from "@mantine/core"
 import type { NextPage } from "next"
 import { Layout } from "../components/Layout"
-import { ProfileDetail } from "../components/ProfileDetail"
+import { ProfileDetail } from "../components/profileDetail/ProfileDetail"
 import SmokedButton from "../components/SmokedButton"
 import { SmokedChart } from "../components/SmokedChart"
 import useStore from "../store"

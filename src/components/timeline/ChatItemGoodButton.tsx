@@ -1,5 +1,5 @@
 import React, { FC, useCallback, useState } from "react"
-import { Chat } from "../types/chat"
+import { Chat } from "../../types/chat"
 import { FaRegThumbsUp } from "react-icons/fa"
 
 type Props = {

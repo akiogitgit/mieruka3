@@ -1,14 +1,12 @@
 import { Card, Center, Group, Text } from "@mantine/core"
 import { FC, useCallback, useEffect, useState } from "react"
-import useStore from "../store"
-import { Smoked } from "../types/smoked"
-import { Profile } from "../types/user"
-import { supabase } from "../utils/supabase"
-import { calcSavingAmount } from "./profile/savingMoney"
-import { calcSplitTime } from "./profile/splitSeconds"
-import { User } from "./profile/User"
-import { ZoukiKun } from "./profile/ZoukiKun"
-import { SmokedChart } from "./SmokedChart"
+import useStore from "../../store"
+import { Smoked } from "../../types/smoked"
+import { supabase } from "../../utils/supabase"
+import { calcSavingAmount } from "./savingMoney"
+import { calcSplitTime } from "../../utils/splitSeconds"
+import { User } from "../UserAvatar"
+import { ZoukiKun } from "../zoukikun/ZoukiKun"
 
 async function getSmokedCreatedAt(userId: string) {
   const { data, error, status } = await supabase

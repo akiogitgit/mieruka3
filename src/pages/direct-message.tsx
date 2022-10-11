@@ -2,7 +2,7 @@ import React, { useCallback, useEffect } from "react"
 import { useState } from "react"
 import { Layout } from "../components/Layout"
 import { AiOutlineSend } from "react-icons/ai"
-import { User } from "../components/profile/User"
+import { User } from "../components/UserAvatar"
 
 import {
   Affix,
