@@ -4,10 +4,11 @@ import { useEffect, useState } from "react"
 import { Calendar } from "@mantine/dates"
 import { NextPage } from "next"
 import { useGetApi, useSelectEq } from "../hooks/useGetApi"
-import { Center } from "@mantine/core"
+import { Center, Indicator } from "@mantine/core"
 import { useIsLoggedIn } from "../hooks/useIsLoggedIn"
 import "dayjs/locale/ja"
 import { useMediaQuery } from "@mantine/hooks"
+import { returnYearMonthDay } from "../utils/changeDateFormat"
 
 // カレンダー（吸った日、禁断症状出た日）
 const CalendarGraph: NextPage = () => {
@@ -30,6 +31,7 @@ const CalendarGraph: NextPage = () => {
     getDates()
   }, [getDates])
 
+  // レスポンシブ境界の定義
   const matches = useMediaQuery("(min-width:500px)")
 
   return (
@@ -45,6 +47,27 @@ const CalendarGraph: NextPage = () => {
           onChange={() => 0}
           size={matches ? "lg" : "sm"}
           labelFormat='YYYY/MM'
+          renderDay={date => {
+            const day = date.getDate()
+            const formatedDate = returnYearMonthDay(date)
+
+            if (!value) {
+              return day
+            }
+            const smokedDates = value.map(v => returnYearMonthDay(v))
+            const isSmoked = smokedDates.includes(formatedDate)
+            return (
+              <Indicator
+                label={"4"} // 吸った本数
+                size={16}
+                color='red'
+                offset={12}
+                disabled={!isSmoked} // 日付
+              >
+                <div>{day}</div>
+              </Indicator>
+            )
+          }}
         />
       </Center>
     </Layout>
