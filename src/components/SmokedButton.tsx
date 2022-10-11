@@ -6,9 +6,11 @@ import useStore from "../store"
 
 const SmokedButton = () => {
   const session = useStore(s => s.session)
+  const userInfo = useStore(s => s.userInfo)
 
   // 喫煙ボタンが押された時の処理
   const [opened, setOpened] = useState(false)
+  const [openedHelpModal, setOpenedHelpModal] = useState(false)
 
   const openSmokedModal = useCallback(() => {
     setOpened(true)
@@ -44,15 +46,60 @@ const SmokedButton = () => {
     })
   }, [session, closeSmokedModal])
 
+  const createHelpChat = useCallback(async () => {
+    const { error } = await supabase.from("chats").insert(
+      {
+        user_id: userInfo?.user_id,
+        user_name: userInfo?.name,
+        message: `${userInfo?.name}さんが助けを求めてるよ！`,
+      },
+      {
+        returning: "minimal", //返り値を無くす
+      },
+    )
+
+    if (error) {
+      throw new Error(error.message)
+    }
+  }, [userInfo?.name, userInfo?.user_id])
+
+  const onClickHelpButton = useCallback(() => {
+    createHelpChat()
+    setOpenedHelpModal(false)
+    showNotification({
+      title: "タイムラインに投稿しました",
+      message: "",
+    })
+  }, [createHelpChat])
+
   return (
     <>
       <Stack>
-        <Button radius='xl' size='xl'>
+        <Button
+          radius='xl'
+          size='xl'
+          onClick={() => setOpenedHelpModal(v => !v)}
+        >
           😖 助けて
         </Button>
         <Button radius='xl' size='xl' onClick={openSmokedModal}>
           😭 吸っちゃったあ
         </Button>
+        <Modal
+          opened={openedHelpModal}
+          onClose={() => setOpenedHelpModal(v => !v)}
+          title='禁断症状の対処法'
+          centered
+        >
+          <Stack spacing='sm' ml='sm' my='xl'>
+            <p>① 甘いものを食べてみよう！</p>
+            <p>② 運動してみよう！</p>
+            <p>③ ガムたばこで我慢しよう！</p>
+          </Stack>
+          <div className='flex mt-5 justify-end'>
+            <Button onClick={onClickHelpButton}>みんなに助けを求める</Button>
+          </div>
+        </Modal>
         <Modal
           opened={opened}
           onClose={closeSmokedModal}
