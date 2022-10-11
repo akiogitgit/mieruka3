@@ -2,10 +2,10 @@
 // 引数：1.2 -> 返り値："心臓の病気になる確率が下がりました"
 
 export const riskReductionMessage = (nonSmokingDuration: number): string => {
-  const day = nonSmokingDuration
+  const minutes = nonSmokingDuration / 60
+  const hours = minutes / 60
+  const day = hours / 24
   const year = day / 365
-  const hours = day * 24
-  const minutes = hours * 60
 
   if (minutes < 20) {
     return "禁煙がんばれ！"
