@@ -20,9 +20,11 @@ const Home: NextPage = () => {
         <Stack className='mb-6'>
           <ProfileDetail />
         </Stack>
-        <Center mb={100}>
-          <SmokedButton />
-        </Center>
+        {session && (
+          <Center>
+            <SmokedButton />
+          </Center>
+        )}
       </div>
     </Layout>
   )

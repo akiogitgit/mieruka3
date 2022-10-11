@@ -141,8 +141,10 @@ export const ProfileDetail: FC = () => {
           </div>
         </Group>
       </Card>
-      {userName && <Chart userName={userName} />}
-      <ZoukiKun nonSmokingDuration={continuousNonSmokingDuration} />
+　　　　　　　　　　　　{session && <Chart userName={userName} />}
+      {session && (
+        <ZoukiKun nonSmokingDuration={continuousNonSmokingDuration} />
+      )}
     </>
   )
 }
