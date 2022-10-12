@@ -8,8 +8,8 @@ import {
   ScrollArea,
 } from "@mantine/core"
 import React, { useCallback, useEffect, useState } from "react"
-import { ChatCreateButton } from "../components/ChatCreateButton"
-import { ChatItemGoodButton } from "../components/ChatItemGoodButton"
+import { ChatCreateButton } from "../components/timeline/ChatCreateButton"
+import { ChatItemGoodButton } from "../components/timeline/ChatItemGoodButton"
 import { Layout } from "../components/Layout"
 import { Chat } from "../types/chat"
 import { changeDateFormat } from "../utils/changeDateFormat"

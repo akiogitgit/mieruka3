@@ -1,14 +1,12 @@
 import { Card, Center, Group, Text } from "@mantine/core"
 import { FC, useCallback, useEffect, useState } from "react"
-import useStore from "../store"
-import { Smoked } from "../types/smoked"
-import { Profile } from "../types/user"
-import { supabase } from "../utils/supabase"
-import { calcSavingAmount } from "./profile/savingMoney"
-import { calcSplitTime } from "./profile/splitSeconds"
-import { User } from "./profile/User"
-import { ZoukiKun } from "./profile/ZoukiKun"
-import { SmokedChart } from "./SmokedChart"
+import useStore from "../../store"
+import { Smoked } from "../../types/smoked"
+import { supabase } from "../../utils/supabase"
+import { calcSavingAmount } from "./savingAmount"
+import { calcSplitTime } from "../../utils/splitSeconds"
+import { User } from "../UserAvatar"
+import { ZoukiKun } from "../zoukikun/ZoukiKun"
 
 async function getSmokedCreatedAt(userId: string) {
   const { data, error, status } = await supabase
@@ -27,7 +25,7 @@ async function getSmokedCreatedAt(userId: string) {
 export const ProfileDetail: FC = () => {
   const [nonSmokingDuration, setNonSmokingDuration] = useState(0)
   const [nonSmokingDurationStr, setNonSmokingDurationStr] = useState("0日")
-  const [savingPrice, setSavingPrice] = useState(0)
+  const [savingAmount, setSavingAmount] = useState(0)
   const [lifespanStr, setLifespanStr] = useState("0日")
 
   const session = useStore(s => s.session)
@@ -84,7 +82,8 @@ export const ProfileDetail: FC = () => {
       numTabacoPerDay,
       smokingCountAll,
     )
-    setSavingPrice(savingAmount)
+    console.log({ smokingCountAll })
+    setSavingAmount(savingAmount)
 
     // 伸びた寿命
     // ((禁煙開始日から、今日までの吸った本数合計 * -330s) +
@@ -119,7 +118,7 @@ export const ProfileDetail: FC = () => {
           </div>
           <div>
             <Text weight={700}>節約金額</Text>
-            <div>{savingPrice}円</div>
+            <div>{savingAmount}円</div>
           </div>
           <div>
             <Text weight={700}>伸びた寿命</Text>

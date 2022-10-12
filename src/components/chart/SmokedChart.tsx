@@ -2,9 +2,10 @@ import React, { FC, useCallback, useRef } from "react"
 import { useEffect, useState } from "react"
 import HighchartsReact from "highcharts-react-official"
 import Highcharts from "highcharts"
-import { Smoked } from "../types/smoked"
-import { supabase } from "../utils/supabase"
-import useStore from "../store"
+import { Smoked } from "../../types/smoked"
+import { supabase } from "../../utils/supabase"
+import useStore from "../../store"
+import { options } from "./options"
 
 async function getSmokedCreatedAt(userId: string) {
   const { data, error, status } = await supabase
@@ -37,66 +38,6 @@ function formedDateOfThisWeek() {
   return { startDate, endDate }
 }
 
-const options = {
-  series: [
-    {
-      data: [[0, 0]],
-      shadow: true,
-      color: "#2BAEF0",
-    },
-  ],
-  title: {
-    text: "XXXさんのタバコを吸った本数",
-  },
-  subtitle: {
-    text: "",
-  },
-  xAxis: {
-    title: {
-      text: "日付",
-    },
-    type: "datetime",
-    minPadding: 0.1,
-    maxPadding: 0,
-    // showLastLabel: true,
-    // tickInterval: 24 * 3600,
-    labels: {
-      format: "{value:%Y-%m-%d}",
-    },
-  },
-  yAxis: {
-    title: {
-      text: "吸った本数 (本)",
-    },
-    opposite: true,
-    offset: 0,
-  },
-  exporting: {
-    enabled: true,
-  },
-  plotOptions: {
-    series: {
-      animation: false,
-    },
-    area: {
-      fillColor: false,
-      lineWidth: 2,
-      threshold: null,
-    },
-  },
-  scrollbar: {
-    enabled: true,
-  },
-  navigator: {
-    enabled: false,
-  },
-  rangeSelector: {
-    enabled: false,
-  },
-  legend: {
-    enabled: false,
-  },
-}
 type Props = {
   userName: string | null
 }
@@ -113,25 +54,22 @@ export const SmokedChart: FC<Props> = ({ userName }) => {
     if (userId === undefined || userId === null) {
       return
     }
-    const smokedData = await getSmokedCreatedAt(userId)
+    const smokedData = (await getSmokedCreatedAt(userId)) ?? []
     console.table(smokedData)
-    if (
-      smokedData === undefined ||
-      smokedData === null ||
-      smokedData?.length === 0
-    ) {
-      return
-    }
+
     let smokingCountPerDay: number[][] = []
     let smokingCount = 0
     let saveSmokingTimestamp = 0
+
     for (const smokingDetail of smokedData) {
       const smokingDate = new Date(
         smokingDetail.created_at,
       ).toLocaleDateString()
+
       console.log("smoking date", smokingDate)
       const smokingTimeStamp =
         new Date(smokingDate).getTime() + 9 * 60 * 60 * 1000 // 15時間消す(なんかうまく時間取れない。。。)
+
       if (saveSmokingTimestamp === smokingTimeStamp) {
         smokingCount = smokingCount + (smokingDetail?.num_tabaco ?? 0)
       } else {
@@ -143,7 +81,9 @@ export const SmokedChart: FC<Props> = ({ userName }) => {
         saveSmokingTimestamp = smokingTimeStamp
       }
     }
+
     smokingCountPerDay.push([saveSmokingTimestamp, smokingCount])
+    // console.log("smokin2: ", smokingCountPerDay)
     const thisWeek = formedDateOfThisWeek()
     const newOptions = {
       ...options,

@@ -16,7 +16,7 @@ type Props = {
 const menus = [
   { path: "/", label: "ホーム" },
   { path: "/calendar", label: "カレンダー" },
-  { path: "/chat", label: "タイムライン" },
+  { path: "/timeline", label: "タイムライン" },
   { path: "/direct-message", label: "医者とのDM" },
 ]
 
