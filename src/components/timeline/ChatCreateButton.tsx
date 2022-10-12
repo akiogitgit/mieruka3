@@ -1,10 +1,10 @@
 import { Button, LoadingOverlay, Modal, Stack, Textarea } from "@mantine/core"
 import { useForm } from "@mantine/form"
 import { FC, useCallback, useEffect, useState } from "react"
-import { ChatFormParams } from "../types/chat"
-import { supabase } from "../utils/supabase"
+import { ChatFormParams } from "../../types/chat"
+import { supabase } from "../../utils/supabase"
 import { showNotification } from "@mantine/notifications"
-import useStore from "../store"
+import useStore from "../../store"
 
 // ログインしていないなら押せなくする
 export const ChatCreateButton: FC = () => {
