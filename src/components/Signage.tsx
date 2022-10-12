@@ -70,7 +70,9 @@ export const Signage: FC<Props> = ({ hospitalNumber = 0 }) => {
     <div>
       <Card shadow='sm' p='lg' radius='md' withBorder>
         <Group ml={20} position='apart' mt='md' mb='xs'>
-          <Text weight={700}>{hospitals[hospitalNumber].name}</Text>
+          <Text size={30} weight={700}>
+            {hospitals[hospitalNumber].name}
+          </Text>
         </Group>
         <Card.Section ml={20} component='a'>
           <Group>
