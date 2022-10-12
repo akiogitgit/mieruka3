@@ -27,9 +27,9 @@ const Home: NextPage = () => {
           <div>
             <SmokedButton />
             <div className='mt-6'>
+              <SmokedChart userName={userInfo?.name ?? "ゲスト"} />
               <SavingAmountChart userName={userInfo?.name ?? "ゲスト"} />
               <LifespanChart userName={userInfo?.name ?? "ゲスト"} />
-              <SmokedChart userName={userInfo?.name ?? "ゲスト"} />
             </div>
           </div>
         )}
