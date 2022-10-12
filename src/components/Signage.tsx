@@ -1,15 +1,6 @@
-import { Badge, Card, Center, Group, Stack, Text } from "@mantine/core"
-import { FC, useCallback, useEffect, useState } from "react"
+import { Badge, Card, Group, Stack, Text } from "@mantine/core"
+import { FC } from "react"
 import Image from "next/image"
-import { useIsLoggedIn } from "../hooks/useIsLoggedIn"
-import { Smoked } from "../types/smoked"
-import { Profile } from "../types/user"
-import { supabase } from "../utils/supabase"
-import { Chart } from "./Chart"
-import { calcSavingAmount } from "./profile/savingMoney"
-import { calcSplitTime } from "./profile/splitSeconds"
-import { User } from "./profile/User"
-import { ZoukiKun } from "./profile/ZoukiKun"
 
 type Props = {
   hospitalNumber: number

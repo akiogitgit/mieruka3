@@ -1,14 +1,6 @@
-import { Card, Center, Group, ScrollArea, Stack, Text } from "@mantine/core"
-import { FC, useCallback, useEffect, useState } from "react"
-import { useIsLoggedIn } from "../hooks/useIsLoggedIn"
-import { Smoked } from "../types/smoked"
-import { Profile } from "../types/user"
-import { supabase } from "../utils/supabase"
-import { Chart } from "./Chart"
-import { calcSavingAmount } from "./profile/savingMoney"
-import { calcSplitTime } from "./profile/splitSeconds"
-import { User } from "./profile/User"
-import { ZoukiKun } from "./profile/ZoukiKun"
+import { ScrollArea, Stack, Text } from "@mantine/core"
+import { FC } from "react"
+
 import { Signage } from "./Signage"
 
 export const SignageList: FC = () => {
