@@ -13,7 +13,7 @@ import useStore from "../store"
 
 // カレンダー（吸った日、禁断症状出た日）
 const CalendarGraph: NextPage = () => {
-  const session = useStore(s => s.session)
+  const session = useStore((s: any) => s.session)
 
   const [value, setValue] = useState<Date[]>()
   const [smokedData, setSmokedData] = useState<Date[]>()
