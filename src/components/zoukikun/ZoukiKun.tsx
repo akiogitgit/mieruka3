@@ -30,7 +30,7 @@ export const ZoukiKun: FC<Props> = ({ nonSmokingDuration }) => {
             />
           </div>
         </div>
-        <div className='mb-5 balloon4'>{cheeringMessage}</div>
+        <div className='font-bold mb-5 balloon4'>{cheeringMessage}</div>
       </div>
     </Center>
   )

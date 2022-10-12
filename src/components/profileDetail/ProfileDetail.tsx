@@ -76,7 +76,7 @@ export const ProfileDetail: FC = () => {
     const numTabacoPerDay = userInfo?.num_tabaco_per_day ?? 0
     const smokingCountAll =
       smokedData?.reduce((sum, item) => sum + item?.num_tabaco ?? 0, 0) ?? 0
-    const savingAmount = calcSavingAmount(
+    const savingAmount = ~~calcSavingAmount(
       registeredDurationDay,
       tabacoPrice,
       numTabacoPerDay,
