@@ -65,7 +65,7 @@ const DirectMessage: NextPage = () => {
 
     form.reset()
     console.log(directMessages)
-    setTimeout(addMsg, 3000)
+    setTimeout(addMsg, 1500)
   }, [addMsg, directMessages, form, userInfo?.name])
 
   return (
