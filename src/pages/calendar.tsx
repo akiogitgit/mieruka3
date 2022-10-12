@@ -32,6 +32,8 @@ const CalendarGraph: NextPage = () => {
     value: session?.user?.id,
   })
 
+  //console.log({ profileData })
+
   //console.log(data)
   // >"created_at"2022-10-10T14:50:46.177081+00:00"num_tabaco: 1"
 
@@ -52,6 +54,7 @@ const CalendarGraph: NextPage = () => {
       date.setDate(date.getDate() + 1)
     ) {
       dates.push(date)
+      console.log(dates)
     }
     setValue(dates)
   }, [profileData])
@@ -60,8 +63,6 @@ const CalendarGraph: NextPage = () => {
     getDates()
   }, [getDates])
 
-  // 禁煙開始日時
-
   // レスポンシブ境界の定義
   const matches = useMediaQuery("(min-width:500px)")
 
@@ -69,6 +70,12 @@ const CalendarGraph: NextPage = () => {
     <Layout>
       <Center>
         <h1>カレンダー</h1>
+      </Center>
+      <Center>
+        <p>
+          <span style={{ color: "green" }}>●</span>：禁煙日　
+          <span style={{ color: "red" }}>●</span>：吸った本数
+        </p>
       </Center>
       <Center>
         <Calendar
@@ -86,7 +93,7 @@ const CalendarGraph: NextPage = () => {
               return day
             }
             const smokedDates = smokedData?.map(v => returnYearMonthDay(v))
-            console.log(smokedDates)
+            // console.log(smokedDates)
             /*0: "2022/10/10"
               1: "2022/10/11"
               2: "2022/10/11"
@@ -97,10 +104,6 @@ const CalendarGraph: NextPage = () => {
             const smokesum = smokedDates?.filter(
               item => item === formatedDate,
             ).length
-            // for (var i =0;i<smokedDates.length;i++){
-            //   var elm = smokeDates[i];
-            //   smokesum[elm]=(smokesum[elm]||0)+1
-            // }
 
             return (
               <Indicator
