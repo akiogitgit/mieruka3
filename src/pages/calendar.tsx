@@ -26,6 +26,12 @@ const CalendarGraph: NextPage = () => {
       value: session?.user?.id,
     },
   )
+  const { data: smokedDate } = useSelectEq<{ created_at: string }>("smoked", {
+    select: "created_at",
+    column: "user_id",
+    value: session?.user?.id,
+  })
+
   const { data: profileData } = useSelectEq("profiles", {
     select: "created_at",
     column: "user_id",
@@ -57,7 +63,7 @@ const CalendarGraph: NextPage = () => {
       console.log(dates)
     }
     setValue(dates)
-  }, [profileData])
+  }, [data, profileData])
 
   useEffect(() => {
     getDates()
@@ -71,7 +77,7 @@ const CalendarGraph: NextPage = () => {
       <Center>
         <h1>カレンダー</h1>
       </Center>
-      <Center>
+      <Center mt='md'>
         <p>
           <span style={{ color: "green" }}>●</span>：禁煙日　
           <span style={{ color: "red" }}>●</span>：吸った本数
@@ -100,21 +106,42 @@ const CalendarGraph: NextPage = () => {
               3: "2022/10/11"
               4: "2022/10/11"*/
             const isSmoked = smokedDates?.includes(formatedDate)
+            const now = new Date()
+            // return
+            const startDate = new Date(
+              profileData && profileData[0]?.created_at,
+            )
+            const isBeforeToday =
+              date.getTime() < now.getTime() &&
+              date.getTime() > startDate.getTime()
 
             const smokesum = smokedDates?.filter(
               item => item === formatedDate,
             ).length
 
             return (
-              <Indicator
-                label={String(smokesum)} // 吸った本数,string
-                size={16}
-                color={"red"}
-                offset={12}
-                disabled={!isSmoked} // 日付
-              >
-                <div>{day}</div>
-              </Indicator>
+              <>
+                {isSmoked ? (
+                  <Indicator
+                    label={String(smokesum)} // 吸った本数,string
+                    size={16}
+                    color='red'
+                    offset={12}
+                    disabled={!isSmoked} // 日付
+                  >
+                    <div>{day}</div>
+                  </Indicator>
+                ) : (
+                  <Indicator
+                    size={14}
+                    color='green'
+                    offset={12}
+                    disabled={!isBeforeToday} // 日付
+                  >
+                    <div>{day}</div>
+                  </Indicator>
+                )}
+              </>
             )
           }}
         />
