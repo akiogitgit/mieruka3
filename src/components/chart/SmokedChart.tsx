@@ -41,7 +41,7 @@ function formedDateOfThisWeek() {
 type Props = {
   userName: string | null
 }
-// カレンダー（吸った日、禁断症状出た日）
+// 禁煙カレンダー（吸った日、禁断症状出た日）
 export const SmokedChart: FC<Props> = ({ userName }) => {
   const session = useStore(s => s.session)
   const chartComponent = useRef(null)

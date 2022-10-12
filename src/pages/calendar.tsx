@@ -11,7 +11,7 @@ import { returnYearMonthDay } from "../utils/changeDateFormat"
 
 import useStore from "../store"
 
-// カレンダー（吸った日、禁断症状出た日）
+// 禁煙カレンダー（吸った日、禁断症状出た日）
 const CalendarGraph: NextPage = () => {
   const session = useStore((s: any) => s.session)
 
@@ -75,7 +75,7 @@ const CalendarGraph: NextPage = () => {
   return (
     <Layout>
       <Center>
-        <h1>カレンダー</h1>
+        <h1>禁煙カレンダー</h1>
       </Center>
       <Center mt='md'>
         <p>

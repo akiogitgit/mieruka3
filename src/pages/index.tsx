@@ -25,15 +25,19 @@ const Home: NextPage = () => {
           <ProfileDetail />
         </Stack>
         {session && (
-          <div>
+          <Stack>
             <SmokedButton />
             <div className='mt-6'>
+              <Text size={20} mb='sm'>
+                今週の禁煙グラフ
+              </Text>
+
               <SmokedChart userName={userInfo?.name ?? "ゲスト"} />
               <SavingAmountChart userName={userInfo?.name ?? "ゲスト"} />
               <LifespanChart userName={userInfo?.name ?? "ゲスト"} />
             </div>
             <SignageList />
-          </div>
+          </Stack>
         )}
       </div>
     </Layout>
