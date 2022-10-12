@@ -2,6 +2,7 @@ import { Center, Stack, Text } from "@mantine/core"
 import type { NextPage } from "next"
 import { Layout } from "../components/Layout"
 import { ProfileDetail } from "../components/ProfileDetail"
+import { SignageList } from "../components/SignageList"
 import SmokedButton from "../components/SmokedButton"
 import { SmokedChart } from "../components/SmokedChart"
 import useStore from "../store"
@@ -27,6 +28,7 @@ const Home: NextPage = () => {
             <div className='mt-6'>
               <SmokedChart userName={userInfo?.name ?? "ゲスト"} />
             </div>
+            <SignageList />
           </div>
         )}
       </div>
