@@ -17,7 +17,7 @@ const menus = [
   { path: "/", label: "ホーム" },
   { path: "/calendar", label: "禁煙カレンダー" },
   { path: "/timeline", label: "タイムライン" },
-  { path: "/direct-message", label: "医者への相談" },
+  { path: "/direct-message", label: "お医者さんへの相談" },
 ]
 
 export const Layout: FC<Props> = ({ title = "禁煙ミエルカ", children }) => {
