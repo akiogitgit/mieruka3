@@ -107,10 +107,12 @@ const SmokedButton = () => {
             <p>③ ガムたばこで我慢しよう！</p>
           </Stack>
 
-          <p className='mt-10'>現在24人がたばこを我慢しています</p>
+          <p className='mt-10'>
+            現在<span className='font-bold'>24</span>人がたばこを我慢しています
+          </p>
           <div className='flex mt-5 justify-between'>
             <Link href='/direct-message'>
-              <Button>お医者さんにDMする</Button>
+              <Button>お医者さんに相談する</Button>
             </Link>
             <Button onClick={onClickHelpButton}>みんなに助けを求める</Button>
           </div>

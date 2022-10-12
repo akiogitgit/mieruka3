@@ -15,9 +15,9 @@ type Props = {
 
 const menus = [
   { path: "/", label: "ホーム" },
-  { path: "/calendar", label: "カレンダー" },
+  { path: "/calendar", label: "禁煙カレンダー" },
   { path: "/timeline", label: "タイムライン" },
-  { path: "/direct-message", label: "医者とのDM" },
+  { path: "/direct-message", label: "医者への相談" },
 ]
 
 export const Layout: FC<Props> = ({ title = "禁煙ミエルカ", children }) => {
